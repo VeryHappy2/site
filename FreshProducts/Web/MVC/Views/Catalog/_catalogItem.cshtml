@@ -1,0 +1,42 @@
+﻿@using MVC.Services.Interfaces
+@model CatalogItem
+@inject IIdentityParser<ApplicationUser> UserManager
+
+<div class="p-3 mb-2 catalog-product">
+	<img style="width: 100px;
+            max-height: 200px;
+            margin-right: 10px" src="@Model.PictureUrl" class="rounded float-start" alt="@Model.Name" />
+	<div style="flex: 1;">
+		<p class="text-product">Name: @Model.Name</p>
+		<p class="text-product">Price: <b style="color: limegreen">$</b><b>@Model.Price</b></p>
+        <p class="text-product">Brand: @Model.CatalogBrand.Brand</p>
+        <p class="text-product">Type: @Model.CatalogType.Type</p>
+		<p class="text-product">Available stock: @Model.AvailableStock</p>
+		<p class="text-product">Description: @Model.Description</p>
+	</div>
+    @if (Context.User.Identity.IsAuthenticated)
+    {
+        <form method="post" asp-controller="Catalog" asp-action="SearchOrAddBasket">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <input type="hidden" name="PictureUrl" value="@Model.PictureUrl" />
+            <input type="hidden" name="Brand" value="@Model.CatalogBrand.Brand" />
+            <input type="hidden" name="Type" value="@Model.CatalogType.Type" />
+            <input type="hidden" name="Name" value="@Model.Name" />
+            <input type="hidden" name="Description" value="@Model.Description" />
+            <input type="hidden" name="Price" value="@Model.Price" />
+            <input type="hidden" name="AvailableStock" value="@Model.AvailableStock" />
+            <button type="submit" class="btn btn-outline-success" style="width: auto; height: 100px; margin-left: 10px;">
+                <img style="max-height: 85px;" src="~/images/basket.png" />
+            </button>
+        </form>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-outline-success" style="
+            width: auto;
+            height: 95px;
+            margin-left: 10px;">
+                <span>You need to sign in to your account</span>
+        </button>
+    }
+</div>

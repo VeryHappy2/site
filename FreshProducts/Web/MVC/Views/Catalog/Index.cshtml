@@ -1,0 +1,106 @@
+﻿@model MVC.ViewModels.CatalogViewModels.IndexViewModel
+
+@{
+	ViewData["Title"] = "Catalog";
+}
+
+@section Header {
+	<ul class="nav nav-underline">
+		<li class="nav-item">
+			<a class="nav-link active" aria-current="page" href="/Catalog/Index">Catalog</a>
+		</li>
+		<li class="nav-item" style="margin-left:10px">
+			<a class="nav-link" aria-current="page" href="/Order/Index">Orders</a>
+		</li>
+		<form class="d-flex" role="search" asp-controller="Basket" asp-action="Index" method="get">
+			<a aria-current="page" href="/Basket/Index" style="font-size: 16px;
+			text-decoration: none;
+			margin: auto"><i class="bi bi-bag-check-fill"></i> Basket</a>
+		</form>
+	</ul>
+	<form class="d-flex" role="search" asp-controller="Catalog" asp-action="SearchOrAddBasket" method="get">
+		@if (@Model == null || Model.Search == null)
+		{
+			<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+		}
+		else
+		{
+			<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="@Model.Search">
+		}
+		
+		<button class="btn btn-outline-success" type="submit">Search</button>
+	</form>
+}
+@section Section {
+	<section>
+		<div class="container" style="margin:unset;">
+			<form asp-action="@(Model.Search != null ? "SearchOrAddBasket" : "Index")" asp-controller="Catalog" method="post">
+				<label data-title="brand">
+					<select id="brandFilter" name="brandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter">
+						<option>None</option>
+					</select>
+				</label>
+				<label data-title="type">
+					<select id="typeFilter" name="typesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter">
+						<option>None</option>
+					</select>
+				</label>
+				<button type="submit" style="border: none;
+				 background: none">
+					<i style="font-size: 21px;" class="bi bi-box-arrow-in-right"></i>
+				</button>
+			</form>
+		</div>
+	</section>
+}
+
+
+@if (Model != null && Model.PaginationItems.TotalItems != 0)
+{
+	if (!String.IsNullOrEmpty(Model.Search) || Model.PaginationItems.TotalItems == null)
+	{
+		<form id="searchForm" asp-controller="Catalog" asp-action="SearchOrAddBasket" method="post" style="
+          display: flex;
+          justify-content: center;">
+			@await Html.PartialAsync("_pagination", Model)
+		</form>
+	}
+	else
+	{
+		<form id="paginationForm" asp-controller="Catalog" asp-action="Index" method="post" style="
+          display: flex;
+          justify-content: center;">
+			@await Html.PartialAsync("_pagination", Model)
+		</form>
+	}
+
+	@foreach (CatalogItem item in @Model.CatalogItems)
+	{
+		@await Html.PartialAsync("_catalogItem", item)
+	}
+
+	if (!String.IsNullOrEmpty(Model.Search) || Model.PaginationItems.TotalItems == null)
+	{
+		<form id="searchForm" asp-controller="Catalog" asp-action="Search" method="post" style="
+          display: flex;
+          justify-content: center;">
+			@await Html.PartialAsync("_pagination", Model)
+		</form>
+	}
+	else
+	{
+		<form id="paginationForm" asp-controller="Catalog" asp-action="Index" method="post" style="
+          display: flex;
+          justify-content: center;">
+			@await Html.PartialAsync("_pagination", Model)
+		</form>
+	}
+}
+else
+{
+	<div style="display: grid;
+    place-items: center; height: 700px;">
+		<p style="font-size:100px">Not found <b>#404</b></p>
+	</div>
+}
+

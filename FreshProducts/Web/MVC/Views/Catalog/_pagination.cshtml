@@ -1,0 +1,45 @@
+﻿@using MVC.ViewModels.Pagination
+@model MVC.ViewModels.CatalogViewModels.IndexViewModel
+@{
+	int startPageIndex = Model.PaginationItems.MaxPages * Model.PaginationItems.GroupPages.Value;
+	int endPageIndex = startPageIndex + Model.PaginationItems.MaxPages;
+}
+
+@if (Model.PaginationItems.CurrentPage > 0)
+{
+	<button style="margin: 5px" type="submit" class="btn btn-outline-primary" name="search" value="@Model.Search" asp-route-groupPage="@Model.PaginationItems.GroupPages" asp-route-page="@(Model.PaginationItems.CurrentPage - 1)">Back</button>
+}
+
+@if (Model.PaginationItems.GroupPages > 1)
+{
+	<button style="margin: 5px" type="submit" class="btn btn-outline-primary" asp-route-groupPage="@(Model.PaginationItems.GroupPages - 1)">...</button>
+}
+@for (int i = 0; i < Model.PaginationItems.TotalPages; i++)
+{
+	if (i >= startPageIndex && i < endPageIndex)
+	{
+		<button id="@i" style="margin: 5px" type="submit"
+			name="search" value="@Model.Search"
+			asp-route-groupPage="@Model.PaginationItems.GroupPages"
+			asp-route-page="@i"
+				class="btn @(i == Model.PaginationItems.CurrentPage ? "btn-primary" : "btn-outline-primary")">
+			@(i + 1)
+		</button>
+	}
+	else if (i == endPageIndex)
+	{
+		<button style="margin: 5px" type="submit" class="btn btn-outline-primary" asp-route-groupPage="@(Model.PaginationItems.GroupPages + 1)">...</button>
+		break;
+	}
+
+	@if (i > Model.PaginationItems.TotalPages)
+	{
+		break;
+	}
+
+	
+}
+@if (Model.PaginationItems.CurrentPage < Model.PaginationItems.TotalPages - 1)
+{
+	<button style="margin: 5px;" type="submit" class="btn btn-outline-primary" name="search" value="@Model.Search" asp-route-groupPage="@Model.PaginationItems.GroupPages" asp-route-page="@(Model.PaginationItems.CurrentPage + 1)">Next</button>
+}

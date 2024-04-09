@@ -1,0 +1,67 @@
+﻿@using MVC.Services.Interfaces
+@model MVC.ViewModels.BasketViewModels.BasketViewModel
+@inject IIdentityParser<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Basket";
+}
+
+
+
+@section Header {
+    @* FreshMarket *@
+    <ul class="nav nav-underline">
+        <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="/Catalog/Index">Catalog</a>
+        </li>
+        <li class="nav-item" style="margin-left:10px">
+            <a class="nav-link" aria-current="page" href="/Order/Index">Orders</a>
+        </li>
+        <form class="d-flex" role="search" asp-controller="Basket" asp-action="Index" method="get">
+            <a aria-current="page" href="/Basket/Index" style="font-size: 16px;
+			text-decoration: none;
+			margin: auto; 
+            color:limegreen"><i class="bi bi-bag-check-fill"></i> Basket</a>
+        </form>
+    </ul>
+    <form class="d-flex" role="search" asp-controller="Catalog" asp-action="SearchOrAddBasket" method="get">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+}
+
+@if (Model.Data != null && Context.User.Identity.IsAuthenticated)
+{
+    @await Html.PartialAsync("_calculateProduct")
+    @foreach(BasketProduct item in Model.Data)
+    {
+        @await Html.PartialAsync("_basketItem", item);
+    }
+    <form asp-controller="Order" asp-action="AddOrder" method="post" style="display: flex;
+    justify-content: end;">
+        <button class="btn btn-outline-success" type="submit" style="width: 23%;
+    height: 62px;">
+            Add to order
+        </button>
+    </form>
+}
+else
+{
+    @if (!Context.User.Identity.IsAuthenticated)
+    {
+        <div style="display: grid;
+        place-items: center; height: 700px;">
+            <p style="font-size:75px">Please entry to your an account</p>
+        </div>
+    }
+    else
+    {
+        <div style="display: grid;
+        place-items: center; height: 700px;">
+			<p style="font-size:75px">The basket is empty</p>
+        </div>
+    }
+    
+}
+
+
+

@@ -1,0 +1,28 @@
+@using MVC.Services.Interfaces
+
+@inject IIdentityParser<ApplicationUser> UserManager
+
+@if (Context.User.Identity.IsAuthenticated)
+{
+	<ul class="nav nav-underline">
+		<li class="nav-item">
+			<a id="user" class="nav-link" aria-current="page" href="/Catalog/Index">@UserManager.Parse(User).Name</a>
+		</li>
+		<li class="nav-item">
+			<form id="signoutForm" method="post" action="/Account/Signout" class="navbar-right">
+				<button type="submit" class="nav-link btn btn-link" aria-current="page">Sign out</button>
+			</form>
+		</li>
+	</ul>
+	
+}
+else
+{
+	<form asp-area="" asp-controller="Account" asp-action="SignIn" method="post" class="navbar-right">
+		<ul class="nav nav-underline">
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/Account/SignIn">Login</a>
+			</li>
+		</ul>
+	</form>
+}

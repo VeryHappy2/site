@@ -1,0 +1,60 @@
+﻿@using MVC.Models.Responses
+@using MVC.Services.Interfaces
+@using MVC.ViewModels.OrderViewModels
+@model IndexViewModel;
+@inject IIdentityParser<ApplicationUser> UserManager
+@{
+	ViewData["Title"] = "Order";
+}
+
+@section Header {
+	<ul class="nav nav-underline">
+		<li class="nav-item">
+			<a class="nav-link" aria-current="page" href="/Catalog/Index">Catalog</a>
+		</li>
+		<li class="nav-item" style="margin-left:10px">
+			<a class="nav-link active" aria-current="page" href="/Order/Index">Orders</a>
+		</li>
+		<form class="d-flex" role="search" asp-controller="Basket" asp-action="Index" method="get">
+			<a aria-current="page" href="/Basket/Index" style="font-size: 16px;
+			text-decoration: none;
+			margin: auto"><i class="bi bi-bag-check-fill"></i> Basket</a>
+		</form>
+	</ul>
+	<form class="d-flex" role="search" asp-controller="Catalog" asp-action="SearchOrAddBasket" method="get">
+		<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+		<button class="btn btn-outline-success" type="submit">Search</button>
+	</form>
+}
+@if (Model.Order != null  && Context.User.Identity.IsAuthenticated)
+{
+	@foreach (OrderItemResponse item in Model.Order.Items)
+	{
+		@await Html.PartialAsync("_orderItem", item)
+	}
+
+	<div style=" display: flex; justify-content: space-between; height: 45px; background:#dfdfdf">
+		<p>Sum price: @Model.Order.TotalPriceItems</p>
+		<p>Sum amount: @Model.Order.TotalPriceItems</p>
+	</div>
+}
+else
+{
+	
+	@if (!Context.User.Identity.IsAuthenticated)
+	{
+		<div style="display: grid;
+    place-items: center; height: 700px;">
+			<p style="font-size:75px">Please entry to your an account</p>
+		</div>
+	}
+	else
+	{
+		<div style="display: grid;
+    place-items: center; height: 700px;">
+			<p style="font-size:75px">The order is empty</p>
+		</div>
+	}
+	
+}
+
