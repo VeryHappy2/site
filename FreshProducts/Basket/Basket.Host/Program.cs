@@ -78,6 +78,17 @@ app.UseSwagger()
         setup.OAuthAppName("Basket Swagger UI");
     });
 
+app.Use(async (context, next) =>
+{
+	var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+	var id = Guid.NewGuid();
+	LogRequest(logger, context.Request, id);
+
+	await next.Invoke();
+
+	LogResponse(logger, context.Response, id);
+});
+
 app.UseRouting();
 app.UseCors("CorsPolicy");
 
@@ -100,4 +111,14 @@ IConfiguration GetConfiguration()
         .AddEnvironmentVariables();
 
     return builder.Build();
+}
+
+void LogRequest(ILogger<Program> logger, HttpRequest request, Guid id)
+{
+	logger.LogInformation($"Request id:{id}, Method: {request.Method}, Path {request.Path}");
+}
+
+void LogResponse(ILogger<Program> logger, HttpResponse response, Guid id)
+{
+	logger.LogInformation($"Response id: {id}, Status: {response.StatusCode}");
 }

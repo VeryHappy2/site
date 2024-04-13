@@ -14,7 +14,7 @@
 		<p class="text-product">Description: @Model.ProductDescription</p>
 	</div>
 	<form method="post" asp-controller="Basket" asp-action="DeleteProduct">
-		<input type="hidden" name="productId" value="@Model.ProductId" />
+		<input type="hidden" name="Id" value="@Model.ProductId" />
 		<button type="submit" style="border: none;
 			background: none;">
 			<i class="bi bi-arrow-left-short" style="font-size: 23px;

@@ -33,13 +33,11 @@ public class CatalogItemRepository : ICatalogItemRepository
         {
             query = query.Where(w => w.CatalogTypeId == typeFilter.Value);
         }
-        
+
 		if (!string.IsNullOrEmpty(search))
 		{
 			search.ToLower();
-			query = query.Where(w => w.Name.ToLower().Contains(search) 
-            || w.CatalogBrand.Brand.ToLower().Contains(search)
-			|| w.CatalogType.Type.ToLower().Contains(search));
+			query = query.Where(w => w.Name.ToLower().Contains(search));
 		}
 
 		var totalItems = await query.LongCountAsync();
@@ -51,10 +49,11 @@ public class CatalogItemRepository : ICatalogItemRepository
            .Take(pageSize)
            .ToListAsync();
 
-        foreach (var item in itemsOnPage) 
+        foreach (var item in itemsOnPage)
         {
             _logger.LogInformation($"Data of item: {item}");
         }
+
         return new PaginatedItems<CatalogItem>() { TotalCount = totalItems, Data = itemsOnPage };
     }
 

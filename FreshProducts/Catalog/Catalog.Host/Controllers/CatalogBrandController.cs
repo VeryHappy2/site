@@ -50,6 +50,7 @@ public class CatalogBrandController : ControllerBase
         {
             return NotFound();
         }
+
         _logger.LogInformation($"Brand was updated with id: {result}");
         return Ok(new BaseResponse<int?>() { Id = result });
     }

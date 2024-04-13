@@ -35,6 +35,7 @@ public class CatalogItemController : ControllerBase
         {
             _logger.LogInformation($"Catalog item was added with id: {result}");
         }
+
         return Ok(new BaseResponse<int?>() { Id = result });
     }
 
@@ -52,10 +53,12 @@ public class CatalogItemController : ControllerBase
             CatalogTypeId = request.CatalogTypeId,
             PictureFileName = request.PictureFileName
         });
+
         if (result != null)
         {
             _logger.LogInformation($"Catalog item was updated with id: {result}");
         }
+
         return Ok(new BaseResponse<int?>() { Id = result });
     }
 

@@ -78,13 +78,14 @@ public class OrderItemController : ControllerBase
 	public async Task<IActionResult> DeleteOrderItem(ByIdRequest request)
 	{
 		var result = await _service.DeleteAsync(request.Id);
+
 		if (result == null)
 		{
 			return NotFound();
 		}
+
 		_logger.LogInformation($"Status of order: {result}");
 
 		return Ok(result);
 	}
-
 }

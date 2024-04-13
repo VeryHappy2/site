@@ -11,8 +11,7 @@ namespace Catalog.Host.Services
         public CatalogBrandService(
             IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
             ILogger<BaseDataService<ApplicationDbContext>> logger,
-            IRepository<CatalogBrand> repository
-            )
+            IRepository<CatalogBrand> repository)
             : base(dbContextWrapper, logger)
         {
             _repository = repository;
@@ -26,8 +25,7 @@ namespace Catalog.Host.Services
                    new CatalogBrand
                    {
                        Brand = brand,
-                   }
-                );
+                   });
                 return id;
             });
         }
@@ -45,13 +43,13 @@ namespace Catalog.Host.Services
         {
             return await ExecuteSafeAsync(async () =>
             {
-                int? result = await _repository.UpdateAsync(id,
+                int? result = await _repository.UpdateAsync(
+                    id,
                     new CatalogBrand
                     {
                         Id = id,
                         Brand = brand
-                    }
-                    );                
+                    });
                 return result;
             });
         }

@@ -4,7 +4,6 @@ using Catalog.Host.Models.Enums;
 using Catalog.Host.Models.Response.Paginations;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
-using System.Security.Principal;
 
 namespace Catalog.Host.Services;
 
@@ -24,7 +23,7 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
         : base(dbContextWrapper, logger)
     {
         _dbContextWrapper = dbContextWrapper;
-        _catalogBffService = catalogBffService; 
+        _catalogBffService = catalogBffService;
         _catalogItemRepository = catalogItemRepository;
         _mapper = mapper;
     }
@@ -50,7 +49,7 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
             }
 
             var result = await _catalogItemRepository.GetByPageAsync(pageIndex, pageSize, brandFilter, typeFilter, search);
-            
+
             if (result == null)
             {
                 return null;
@@ -92,10 +91,8 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
         return await ExecuteSafeAsync(async () =>
         {
             var result = await _catalogBffService.GetByIdAsync(id);
-            
             var mappedResult = _mapper.Map<CatalogItemDto>(result);
             return mappedResult;
-            
         });
     }
 
@@ -108,6 +105,7 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
             return mappedResult;
         });
     }
+
     public async Task<CatalogTypeDto> GetByType(string type)
     {
         return await ExecuteSafeAsync(async () =>

@@ -33,13 +33,15 @@ public class OrderBffController : ControllerBase
         {
             return NotFound();
         }
+
         _logger.LogInformation($"Data: {JsonConvert.SerializeObject(result)}");
-        
-        return Ok(new BaseOrderResponse { 
-			Id = result.Id, 
-            AmountProducts = result.AmountProducts, 
-            TotalPriceItems = result.TotalPriceItems, 
-            Items = result.Items, 
+
+        return Ok(new BaseOrderResponse
+		{
+			Id = result.Id,
+            AmountProducts = result.AmountProducts,
+            TotalPriceItems = result.TotalPriceItems,
+            Items = result.Items,
             UserId = userId,
 		});
     }
@@ -50,10 +52,12 @@ public class OrderBffController : ControllerBase
 	public async Task<IActionResult> GetOrderById(ByIdRequest request)
 	{
 		var result = await _orderBffService.GetOrdersByIdAsync(request.Id);
+
 		if (result == null)
 		{
 			return NotFound();
 		}
+
 		_logger.LogInformation($"Data: {JsonConvert.SerializeObject(result)}");
 		return Ok(new BaseOrderResponse
 		{

@@ -37,15 +37,16 @@ public class CatalogBffController : ControllerBase
     public async Task<IActionResult> Items(PaginatedItemsRequest<CatalogTypeFilter> request)
     {
         var result = await _catalogService.GetCatalogItemsAsync(request.PageSize, request.PageIndex, request.Filters, request.Search);
-        if(result == null) 
-        { 
+        if (result == null)
+        {
              return NotFound();
         }
-        foreach(var item in result.Data) 
+
+        foreach (var item in result.Data)
         {
             _logger.LogInformation($"Data: {item}");
         }
-        
+
         return Ok(result);
     }
 
@@ -55,10 +56,11 @@ public class CatalogBffController : ControllerBase
     public async Task<IActionResult> GetById(ByIdRequest request)
     {
         var result = await _catalogService.GetById(request.Id);
-        if(result == null)
+        if (result == null)
         {
             return NotFound();
         }
+
         _logger.LogInformation($"Catalog item was got object with name: {result}");
         return Ok(result);
     }
@@ -69,14 +71,13 @@ public class CatalogBffController : ControllerBase
     public async Task<IActionResult> GetByBrand(BaseBrandRequest request)
     {
         var result = await _catalogService.GetByBrand(request.Brand);
-        if(result == null)
+
+        if (result == null)
         {
-            
             return NotFound();
         }
-        
+
         _logger.LogInformation($"Brand: {result}");
-        
         return Ok(result);
     }
 
@@ -86,10 +87,11 @@ public class CatalogBffController : ControllerBase
     public async Task<IActionResult> GetByType(BaseTypeRequest request)
     {
         var result = await _catalogService.GetByType(request.Type);
-        if(result == null)
+        if (result == null)
         {
             return NotFound();
         }
+
         _logger.LogInformation($"Type: {result}");
         return Ok(result);
     }

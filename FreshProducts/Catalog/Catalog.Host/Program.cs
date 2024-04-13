@@ -13,10 +13,9 @@ using Catalog.Host.Repositories.Abstractions;
 
 var configuration = GetConfiguration();
 
-//build config
+// build config
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers(options =>
 {
@@ -45,10 +44,10 @@ builder.Services.AddSwaggerGen(options =>
 				TokenUrl = new Uri($"{authority}/connect/token"),
 				Scopes = new Dictionary<string, string>()
 				{
-					{"mvc", "website"},
-					{"catalog.catalogitem", "catalog.catalogitem" },
-					{"catalog.catalogbrand", "catalog.catalogbrand" },
-					{"catalog.catalogtype", "catalog.catalogtype" },
+					{ "mvc", "website" },
+					{ "catalog.catalogitem", "catalog.catalogitem" },
+					{ "catalog.catalogbrand", "catalog.catalogbrand" },
+					{ "catalog.catalogtype", "catalog.catalogtype" },
 				}
 			}
 		}
@@ -85,7 +84,7 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddAuthorization(configuration);
 
-//app options
+// app options
 
 var app = builder.Build();
 
@@ -112,13 +111,11 @@ app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapDefaultControllerRoute();
     endpoints.MapControllers();
 });
-
 
 CreateDbIfNotExists(app);
 

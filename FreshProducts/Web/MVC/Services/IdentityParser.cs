@@ -13,7 +13,6 @@ public class IdentityParser : IIdentityParser<ApplicationUser>
         {
             return new ApplicationUser
             {
-
                 CardHolderName = claims.Claims.FirstOrDefault(x => x.Type == "card_holder")?.Value ?? "",
                 CardNumber = claims.Claims.FirstOrDefault(x => x.Type == "card_number")?.Value ?? "",
                 Expiration = claims.Claims.FirstOrDefault(x => x.Type == "card_expiration")?.Value ?? "",
@@ -31,6 +30,7 @@ public class IdentityParser : IIdentityParser<ApplicationUser>
                 ZipCode = claims.Claims.FirstOrDefault(x => x.Type == "address_zip_code")?.Value ?? ""
             };
         }
+
         throw new ArgumentException(message: "The principal must be a ClaimsPrincipal", paramName: nameof(principal));
     }
 }

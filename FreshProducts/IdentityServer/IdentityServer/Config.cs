@@ -55,9 +55,9 @@ namespace IdentityServer
                     ClientId = "mvc_pkce",
                     ClientName = "MVC PKCE Client",
                     AllowedGrantTypes = GrantTypes.Code,
-                    ClientSecrets = {new Secret("secret".Sha256())},
+                    ClientSecrets = { new Secret("secret".Sha256())},
                     RedirectUris = { $"{configuration["MvcUrl"]}/signin-oidc"},
-                    AllowedScopes = {"openid", "profile", "mvc"},
+                    AllowedScopes = { "openid", "profile", "mvc"},
                     RequirePkce = true,
                     RequireConsent = false
                 },

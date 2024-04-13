@@ -2,9 +2,7 @@ using MVC.Host.ViewModels;
 using MVC.Host.Services.Interfaces;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
-using MVC.Host.Models.Requests.BaseRequests;
-using System.Net.Http;
-using System.Runtime;
+using MVC.Host.Models.Requests;
 
 namespace MVC.Host.Controllers;
 
@@ -26,21 +24,22 @@ public class BasketBffController : ControllerBase
         _basketService = basketService;
 		_httpClientService = httpClientService;
     }
-    
-    [HttpPost]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+
+	[HttpPost]
+	[ProducesResponseType((int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> AddOrUpdateProduct(Product data)
-    {
-        var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+	{
+		var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 		_logger.LogInformation($"UserId: {userId}" + $"\n Data of Product: {data}");
 		if (data == null)
 		{
 			return BadRequest();
 		}
+
 		await _basketService.AddProduct(userId!, data);
-        return Ok();
-    }
+		return Ok();
+	}
 
     [HttpPost]
     [ProducesResponseType(typeof(List<Product>), (int)HttpStatusCode.OK)]
@@ -49,10 +48,12 @@ public class BasketBffController : ControllerBase
     {
         var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
         var response = await _basketService.GetProducts(userId!);
+
 		if (response == null)
 		{
 			return NotFound();
 		}
+
 		return Ok(response);
     }
 
@@ -62,22 +63,30 @@ public class BasketBffController : ControllerBase
 	public async Task<IActionResult> RemoveProducts()
 	{
 		var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+
 		var result = await _basketService.RemoveBasket(userId!);
 		return Ok(result);
 	}
 
 	[HttpPost]
 	[ProducesResponseType(typeof(List<Product>), (int)HttpStatusCode.OK)]
+	[ProducesResponseType((int)HttpStatusCode.NotFound)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-	public async Task<IActionResult> RemoveProduct(int productId)
+	public async Task<IActionResult> RemoveProduct(ByIdRequest productId)
 	{
 		if (productId == null)
 		{
 			return BadRequest();
 		}
-		var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-		var result = await _basketService.RemoveProduct(userId!, productId);
-		
+
+		string userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+		var result = await _basketService.RemoveProduct(userId!, productId.Id);
+
+		if (result == null)
+		{
+			return NotFound();
+		}
+
 		return Ok(result);
 	}
 
@@ -90,16 +99,9 @@ public class BasketBffController : ControllerBase
 		var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 		var resultGet = await _basketService.GetProducts(userId!);
 
-		if(resultGet == null)
+		if (resultGet == null)
 		{
 			return NotFound();
-		}
-
-		
-
-		if(resultGet == null)
-		{
-			return BadRequest();
 		}
 
 		await _basketService.RemoveBasket(userId!);

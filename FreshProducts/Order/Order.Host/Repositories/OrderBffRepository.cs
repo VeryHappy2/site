@@ -20,7 +20,7 @@ namespace Order.Host.Repositories
 				.Include(o => o.Items)
 				.FirstOrDefaultAsync(x => x.UserId == userId);
 
-            if(result == null)
+            if (result == null)
             {
                 return null;
             }

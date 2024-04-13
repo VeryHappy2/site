@@ -20,12 +20,13 @@ namespace Order.Host.Repositories
         public async Task<int?> AddAsync(T entity)
         {
             var item = await _dbset.AddAsync(entity);
+
             if (item == null)
             {
                 return null;
             }
+
             await _dbContext.SaveChangesAsync();
-    
             return item.Entity.Id;
         }
 
@@ -39,9 +40,8 @@ namespace Order.Host.Repositories
                 await _dbContext.SaveChangesAsync();
                 return _result.Id;
             }
-            
+
             return null;
-            
         }
 
         public async Task<string?> DeleteAsync(int id)
@@ -49,7 +49,7 @@ namespace Order.Host.Repositories
             _result = await _dbset
                 .FindAsync(id);
 
-            if(_result != null) 
+            if (_result != null)
             {
                 _dbset.Remove(_result);
                 await _dbContext.SaveChangesAsync();
@@ -58,6 +58,5 @@ namespace Order.Host.Repositories
 
             return null;
         }
-
     }
 }

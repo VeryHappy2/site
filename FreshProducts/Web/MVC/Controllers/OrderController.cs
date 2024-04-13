@@ -12,12 +12,13 @@ namespace MVC.Controllers
 		private readonly IBasketService _basketService;
 
 		public OrderController(
-			IOrderService orderService
-			, IBasketService basketService)
+			IOrderService orderService,
+			IBasketService basketService)
 		{
 			_orderService = orderService;
 			_basketService = basketService;
 		}
+
 		public async Task<IActionResult> Index()
         {
 			var order = await _orderService.GetOrderProductsAsync();
@@ -32,6 +33,11 @@ namespace MVC.Controllers
 		public async Task<IActionResult> AddOrder()
 		{
 			var resultGet = await _basketService.ReleaseBasketAsync();
+
+			if (resultGet == null)
+			{
+				return View("Error");
+			}
 
 			var orderItems = resultGet.Select(product => new BaseOrderItemRequest
 			{

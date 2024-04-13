@@ -2,7 +2,7 @@
 
 namespace Catalog.Host.Models.Requests.BaseRequests
 {
-    public class BaseProductRequest 
+    public class BaseProductRequest
     {
         [Required]
         [MaxLength(50)]

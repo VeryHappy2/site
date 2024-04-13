@@ -5,8 +5,6 @@
     ViewData["Title"] = "Basket";
 }
 
-
-
 @section Header {
     @* FreshMarket *@
     <ul class="nav nav-underline">
@@ -31,15 +29,18 @@
 
 @if (Model.Data != null && Context.User.Identity.IsAuthenticated)
 {
-    @await Html.PartialAsync("_calculateProduct")
+    <div style=" display: flex; justify-content: space-between; height: 45px; background:#dfdfdf">
+        <p>Sum price: @Model.SumPrice</p>
+        <p>Sum amount: @Model.Amount</p>
+    </div>
     @foreach(BasketProduct item in Model.Data)
     {
         @await Html.PartialAsync("_basketItem", item);
     }
     <form asp-controller="Order" asp-action="AddOrder" method="post" style="display: flex;
-    justify-content: end;">
+        justify-content: end;">
         <button class="btn btn-outline-success" type="submit" style="width: 23%;
-    height: 62px;">
+        height: 62px;">
             Add to order
         </button>
     </form>
@@ -50,17 +51,16 @@ else
     {
         <div style="display: grid;
         place-items: center; height: 700px;">
-            <p style="font-size:75px">Please entry to your an account</p>
+            <p style="font-size:75px">Please entry to your account</p>
         </div>
-    }
-    else
+    } 
+     else
     {
         <div style="display: grid;
         place-items: center; height: 700px;">
-			<p style="font-size:75px">The basket is empty</p>
+            <p style="font-size:75px">The basket is empty</p>
         </div>
     }
-    
 }
 
 

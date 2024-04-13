@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
-		<!--<CodeAnalysisRuleSet>../../settings.ruleset</CodeAnalysisRuleSet>-->
+		<CodeAnalysisRuleSet>../../settings.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>

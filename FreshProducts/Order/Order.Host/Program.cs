@@ -13,9 +13,7 @@ var configuration = GetConfiguration();
 
 //build config
 
-
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers(options =>
 {
@@ -44,9 +42,9 @@ builder.Services.AddSwaggerGen(options =>
 				TokenUrl = new Uri($"{authority}/connect/token"),
 				Scopes = new Dictionary<string, string>()
 				{
-					{"mvc", "website" },
-					{"order.item", "order.item"},
-					{"order.order", "order.order"},
+					{ "mvc", "website" },
+					{ "order.item", "order.item" },
+					{ "order.order", "order.order" },
 				}
 			}
 		}
@@ -85,8 +83,6 @@ builder.Services.AddAuthorization(configuration);
 
 var app = builder.Build();
 
-
-
 app.UseSwagger()
 	.UseSwaggerUI(setup =>
 	{
@@ -94,7 +90,6 @@ app.UseSwagger()
 		setup.OAuthClientId("orderswaggerui");
 		setup.OAuthAppName("Order Swagger UI");
 	});
-
 
 app.Use(async (context, next) =>
 {
@@ -108,13 +103,11 @@ app.Use(async (context, next) =>
     LogResponse(logger, context.Response, id);
 });
 
-
 app.UseRouting();
 app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.UseEndpoints(endpoints =>
 {
@@ -149,7 +142,7 @@ void LogResponse(ILogger<Program> logger, HttpResponse response, Guid id)
 void CreateDbIfNotExists(IHost host)
 {
 	using (var scope = host.Services.CreateScope())
-	{		
+	{
 		var services = scope.ServiceProvider;
 		var logger = services.GetRequiredService<ILogger<Program>>();
 		try
@@ -158,7 +151,6 @@ void CreateDbIfNotExists(IHost host)
 
 			var check = context.Database.EnsureCreated();
 			logger.LogInformation($"Status: {check}");
-				
 		}
 		catch (Exception ex)
 		{

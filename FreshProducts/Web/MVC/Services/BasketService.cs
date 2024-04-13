@@ -1,11 +1,11 @@
-﻿using MVC.Services.Interfaces;
+﻿using MVC.Models.Requests;
+using MVC.Services.Interfaces;
 using MVC.ViewModels;
 
 namespace MVC.Services
 {
 	public class BasketService : IBasketService
 	{
-
 		private readonly IOptions<AppSettings> _settings;
 		private readonly IHttpClientService _httpClient;
 		private readonly ILogger<CatalogService> _logger;
@@ -16,6 +16,7 @@ namespace MVC.Services
 			_settings = settings;
 			_logger = logger;
 		}
+
 		public async Task AddOrUpdateBasketProductAsync(BasketProduct product)
 		{
 			await Task.Delay(150);
@@ -23,7 +24,7 @@ namespace MVC.Services
 				($"{_settings.Value.BasketUrl}/addorupdateproduct", HttpMethod.Post, product);
 		}
 
-		public async Task DeleteProductAsync(int productId)
+		public async Task DeleteProductAsync(ByIdRequest productId)
 		{
 			await Task.Delay(150);
 
@@ -35,7 +36,7 @@ namespace MVC.Services
 		{
 			await Task.Delay(150);
 
-			return  await _httpClient.SendAsync<string, object>
+			return await _httpClient.SendAsync<string, object>
 				($"{_settings.Value.BasketUrl}/removeproducts", HttpMethod.Post, null);
 		}
 

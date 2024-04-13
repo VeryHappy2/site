@@ -20,7 +20,7 @@ namespace Order.Host.Repositories
                 .Include(o => o.Items)
                 .FirstOrDefaultAsync(x => x.Id == entity.OrderId);
 
-			if (excitedItem != null) 
+			if (excitedItem != null)
             {
 				if (excitedOrder == null)
 				{
@@ -43,6 +43,7 @@ namespace Order.Host.Repositories
 				{
 					return null;
 				}
+
 				excitedOrder.AmountProducts += entity.Amount;
                 excitedOrder.TotalPriceItems += entity.Price * entity.Amount;
                 excitedOrder.Items.Add(entity);
@@ -62,9 +63,8 @@ namespace Order.Host.Repositories
                 await _dbContext.SaveChangesAsync();
                 return result.Id;
             }
-            
+
             return null;
-            
         }
 
         public async Task<string?> DeleteAsync(int id)
@@ -72,7 +72,7 @@ namespace Order.Host.Repositories
 			var result = await _dbContext.OrderItemEntity
 				.FindAsync(id);
 
-            if(result != null) 
+            if (result != null)
             {
 				_dbContext.OrderItemEntity.Remove(result);
                 await _dbContext.SaveChangesAsync();

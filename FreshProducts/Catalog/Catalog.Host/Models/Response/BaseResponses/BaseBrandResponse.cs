@@ -2,6 +2,6 @@
 {
     public class BaseBrandResponse
     {
-        public string Brand {  get; set; }
+        public string Brand { get; set; }
     }
 }

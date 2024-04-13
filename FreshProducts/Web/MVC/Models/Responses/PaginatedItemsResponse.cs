@@ -1,6 +1,6 @@
 namespace MVC.Host.Models.Responses;
 
-public class PaginatedItemsResponse<T> 
+public class PaginatedItemsResponse<T>
 {
     public int PageIndex { get; init; }
     public int PageSize { get; init; }

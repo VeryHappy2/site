@@ -8,6 +8,5 @@ namespace MVC.Services.Interfaces
 		Task<OrderResponse> GetOrderProductsAsync();
 		Task<object> AddOrderItem(BaseOrderItemRequest product);
 		Task<int?> AddOrder(BaseOrderRequest product);
-
 	}
 }

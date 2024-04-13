@@ -6,6 +6,6 @@ namespace Catalog.Host.Models.Requests.BaseRequests
     {
         [Required]
         [MaxLength(65)]
-        public string Brand {  get; set; }
+        public string Brand { get; set; }
     }
 }

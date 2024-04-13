@@ -19,8 +19,7 @@ public class CatalogTypeController : ControllerBase
 
     public CatalogTypeController(
         ILogger<CatalogTypeController> logger,
-        ICatalogTypeService catalogTypeService
-        )
+        ICatalogTypeService catalogTypeService)
     {
         _catalogTypeService = catalogTypeService;
         _logger = logger;
@@ -31,10 +30,12 @@ public class CatalogTypeController : ControllerBase
     public async Task<IActionResult> Add(BaseTypeRequest request)
     {
         int? result = await _catalogTypeService.Add(request.Type);
+
         if (result != null)
         {
             _logger.LogInformation($"Type was added with id: {result}");
         }
+
         return Ok(new BaseResponse<int?>() { Id = result });
     }
 
@@ -43,10 +44,12 @@ public class CatalogTypeController : ControllerBase
     public async Task<IActionResult> Update(UpdateTypeRequest request)
     {
         int? result = await _catalogTypeService.Update(request.Id, request.Type);
+
         if (result != null)
         {
             _logger.LogInformation($"Type was updated with id: {result}");
         }
+
         return Ok(new BaseResponse<int?>() { Id = result });
     }
 

@@ -27,7 +27,7 @@ public class OrderService : BaseDataService<ApplicationDbContext>, IService<Orde
         {
             entity.AmountProducts = entity.Items.Count();
 
-            foreach(var item in entity.Items)
+            foreach (var item in entity.Items)
             {
                 entity.TotalPriceItems = entity.AmountProducts * item.Price;
             }
@@ -50,5 +50,5 @@ public class OrderService : BaseDataService<ApplicationDbContext>, IService<Orde
         {
             return await _repository.UpdateAsync(id, entity);
         });
-    } 
+    }
 }

@@ -11,14 +11,13 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
 {
     private readonly ICatalogItemRepository _catalogItemRepository;
     private readonly IRepository<CatalogItem> _repository;
-    readonly ILogger<CatalogItemService> _logger;
+    private readonly ILogger<CatalogItemService> _logger;
 
     public CatalogItemService(
         IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
         ILogger<BaseDataService<ApplicationDbContext>> logger,
         ICatalogItemRepository catalogItemRepository,
-        IRepository<CatalogItem> repository
-        )
+        IRepository<CatalogItem> repository)
         : base(dbContextWrapper, logger)
     {
         _repository = repository;
@@ -32,7 +31,8 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
 
     public Task<int?> Update(int id, CatalogItem entity)
     {
-        return ExecuteSafeAsync( async () => {
+        return ExecuteSafeAsync(async () =>
+        {
             int? result = await _repository.UpdateAsync(id, new CatalogItem
             {
                 Id = id,
@@ -44,15 +44,16 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
                 PictureFileName = entity.PictureFileName,
                 CatalogTypeId = entity.CatalogTypeId,
             });
-            
+
             return result;
         });
     }
 
     public Task<string?> Delete(int id)
     {
-        return ExecuteSafeAsync( async () => { 
-            string result = await _repository.DeleteAsync(id); 
+        return ExecuteSafeAsync(async () =>
+        {
+            string result = await _repository.DeleteAsync(id);
             return result;
         });
     }

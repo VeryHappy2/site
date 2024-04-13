@@ -1,6 +1,6 @@
 ﻿namespace Catalog.Host.Models.Response.BaseResponses
 {
-    public class BaseProductResponse 
+    public class BaseProductResponse
     {
         public string Name { get; set; }
 

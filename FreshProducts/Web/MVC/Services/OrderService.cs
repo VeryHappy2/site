@@ -16,9 +16,10 @@ namespace MVC.Services
             _settings = settings;
             _logger = logger;
         }
+
         public async Task<int?> AddOrder(BaseOrderRequest product)
         {
-            return await _httpClient.SendAsync<int?, object>
+            return await _httpClient.SendAsync<int?, BaseOrderRequest>
                 ($"{_settings.Value.OrderOrderUrl}/addorder", HttpMethod.Post, product);
         }
 
@@ -26,7 +27,7 @@ namespace MVC.Services
 		{
 			product.CreatedAt = DateTime.Now.ToString("dd.MM.yyyy");
 
-			return await _httpClient.SendAsync<object, object>
+			return await _httpClient.SendAsync<object, BaseOrderItemRequest>
 				($"{_settings.Value.OrderItemUrl}/addorderitem", HttpMethod.Post, product);
 		}
 

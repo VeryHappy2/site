@@ -34,7 +34,7 @@ public class CatalogService : ICatalogService
         {
             filters.Add(CatalogTypeFilter.Type, type.Value);
         }
- 
+
 		return await _httpClient.SendAsync<PaginatedItemsResponse<CatalogItem>, object>
             ($"{_settings.Value.CatalogUrl}/items", HttpMethod.Post, new PaginatedItemsRequest<CatalogTypeFilter>
             {
@@ -42,7 +42,7 @@ public class CatalogService : ICatalogService
                 PageSize = pageSize,
                 Search = search,
                 Filters = filters,
-            });;
+            });
     }
 
     public async Task<IEnumerable<SelectListItem>> GetBrands()
@@ -59,7 +59,7 @@ public class CatalogService : ICatalogService
         await Task.Delay(300);
         var serverList = await _httpClient.SendAsync<List<CatalogType>, object>
             ($"{_settings.Value.CatalogUrl}/gettypes", HttpMethod.Post, null);
-        
+
         return serverList.Select(item => new SelectListItem { Text = item.Type, Value = item.Id.ToString() }).ToList();
     }
 }

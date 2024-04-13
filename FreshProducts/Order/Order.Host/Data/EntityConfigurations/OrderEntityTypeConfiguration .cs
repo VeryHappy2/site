@@ -23,7 +23,7 @@ public class OrderItemEntityConfiguration
         builder.Property(x => x.UserId)
             .IsRequired();
 
-        builder.Property(x => x.AmountProducts) 
+        builder.Property(x => x.AmountProducts)
             .IsRequired();
     }
 }

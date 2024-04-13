@@ -24,7 +24,7 @@ namespace MVC.Host.Services
             _config = config.Value;
         }
 
-        public Task AddOrUpdateAsync<T>(string key, T value) 
+        public Task AddOrUpdateAsync<T>(string key, T value)
         => AddOrUpdateInternalAsync(key, value);
 
         public async Task<T> GetAsync<T>(string key)
@@ -34,17 +34,16 @@ namespace MVC.Host.Services
             var cacheKey = GetItemCacheKey(key);
 
             var serialized = await redis.StringGetAsync(cacheKey);
-            
-            return serialized.HasValue ? 
-                _jsonSerializer.Deserialize<T>(serialized.ToString()) 
+            return serialized.HasValue ?
+                _jsonSerializer.Deserialize<T>(serialized.ToString())
                 : default(T)!;
         }
 
-        private string GetItemCacheKey(string userId) =>
-            $"{userId}";
-
-        public async Task AddOrUpdateInternalAsync<T>(string key, T value,
-            IDatabase redis = null!, TimeSpan? expiry = null)
+        public async Task AddOrUpdateInternalAsync<T>(
+            string key,
+            T value,
+            IDatabase redis = null!,
+            TimeSpan? expiry = null)
         {
             redis = redis ?? GetRedisDatabase();
             expiry = expiry ?? _config.CacheTimeout;
@@ -76,8 +75,9 @@ namespace MVC.Host.Services
 				_logger.LogInformation($"No value found for key {key} in cache");
 			}
 		}
-		private IDatabase GetRedisDatabase() => _redisCacheConnectionService.Connection.GetDatabase();
 
-		
+		private IDatabase GetRedisDatabase() => _redisCacheConnectionService.Connection.GetDatabase();
+        private string GetItemCacheKey(string userId) =>
+            $"{userId}";
 	}
 }

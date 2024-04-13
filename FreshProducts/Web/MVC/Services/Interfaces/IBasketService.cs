@@ -1,4 +1,5 @@
-﻿using MVC.ViewModels;
+﻿using MVC.Models.Requests;
+using MVC.ViewModels;
 
 namespace MVC.Services.Interfaces
 {
@@ -7,7 +8,7 @@ namespace MVC.Services.Interfaces
 		Task<List<BasketProduct>> GetBasketProductsAsync();
 		Task AddOrUpdateBasketProductAsync(BasketProduct product);
 		Task<string?> DeleteBasketProductsAsync();
-		Task DeleteProductAsync(int productId);
+		Task DeleteProductAsync(ByIdRequest productId);
 		Task<List<BasketProduct>> ReleaseBasketAsync();
 	}
 }

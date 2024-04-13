@@ -25,19 +25,16 @@ namespace Catalog.Host.Services
                    new CatalogType
                    {
                        Type = type,
-                   }
-                );
+                   });
                 return id;
             });
         }
-
-        
 
         public async Task<string?> Delete(int id)
         {
             return await ExecuteSafeAsync(async () =>
             {
-                string result = await _repository.DeleteAsync( id );
+                string result = await _repository.DeleteAsync(id);
                 return result;
             });
         }
@@ -46,16 +43,15 @@ namespace Catalog.Host.Services
         {
             return await ExecuteSafeAsync(async () =>
             {
-                int? result = await _repository.UpdateAsync(id, 
-                    new CatalogType { 
+                int? result = await _repository.UpdateAsync(
+                    id,
+                    new CatalogType
+                    {
                         Id = id,
-                        Type = type 
-                        }
-                    );
+                        Type = type
+                    });
                 return result;
             });
         }
-
-        
     }
 }

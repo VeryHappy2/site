@@ -23,17 +23,17 @@ public class OrderEntityConfiguration
         builder.Property(cb => cb.OrderId)
             .IsRequired();
 
-		builder.Property(x => x.Name) 
+		builder.Property(x => x.Name)
             .HasMaxLength(65)
             .IsRequired();
 
 		builder.Property(x => x.ProductId)
 			.IsRequired();
 
-		builder.Property(x => x.Amount) 
+		builder.Property(x => x.Amount)
             .IsRequired();
 
-        builder.Property(x => x.CreatedAt) 
+        builder.Property(x => x.CreatedAt)
             .IsRequired();
 
         builder

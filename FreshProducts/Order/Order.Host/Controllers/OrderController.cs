@@ -57,7 +57,7 @@ public class OrderController : ControllerBase
 
         _logger.LogInformation($"Order was created with id: {result}");
 
-        return Ok(new BaseResponse<int?> { Id = result });
+        return Ok(result);
     }
 
     [HttpPost]
@@ -85,12 +85,12 @@ public class OrderController : ControllerBase
             UserId = userId
 		});
 
-        if(result == null) 
-        { 
+        if (result == null)
+        {
             return BadRequest();
         }
+
         _logger.LogInformation($"id of a new order: {result}");
-        
         return Ok(new BaseResponse<int?> { Id = result });
 	}
 
@@ -101,10 +101,12 @@ public class OrderController : ControllerBase
 	public async Task<IActionResult> DeleteOrder(ByIdRequest request)
 	{
 		var result = await _service.DeleteAsync(request.Id);
+
 		if (result == null)
 		{
 			return NotFound();
 		}
+
 		_logger.LogInformation($"Status of order: {result}");
 
 		return Ok(result);

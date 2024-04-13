@@ -15,7 +15,6 @@ builder.Services.AddControllersWithViews();
 
 builder.AddConfiguration();
 
-
 var identityUrl = configuration.GetValue<string>("IdentityUrl");
 var callBackUrl = configuration.GetValue<string>("CallBackUrl");
 var redirectUrl = configuration.GetValue<string>("RedirectUri");
@@ -48,7 +47,6 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Add("mvc");
 	});
 
-
 builder.Services.Configure<AppSettings>(configuration);
 
 builder.Services.AddHttpClient();
@@ -58,8 +56,6 @@ builder.Services.AddTransient<ICatalogService, CatalogService>();
 builder.Services.AddTransient<IBasketService, BasketService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
-
-
 
 var app = builder.Build();
 
@@ -80,7 +76,6 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-
     endpoints.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
     endpoints.MapControllerRoute("search", "{controller=Catalog}/{action=SearchOrAddBasket}/{id?}");
 

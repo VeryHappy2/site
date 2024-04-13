@@ -13,11 +13,10 @@ namespace Catalog.Host.Repositories
         {
             _dbcontext = dbcontext.DbContext;
         }
+
         public async Task<List<CatalogBrand>> GetBrandsAsync()
         {
-            
             return await _dbcontext.CatalogBrands.ToListAsync();
-            
         }
 
         public async Task<CatalogBrand> GetByBrandAsync(string brand)
@@ -25,40 +24,45 @@ namespace Catalog.Host.Repositories
             var result = await _dbcontext.CatalogBrands
                 .FirstOrDefaultAsync(b => b.Brand == brand);
             Console.WriteLine(result);
-            if(result != null) 
-            { 
+            if (result != null)
+            {
                 return result;
             }
+
             return null;
         }
 
-        public async Task<CatalogItem> GetByIdAsync(int id) //Get item
+        public async Task<CatalogItem> GetByIdAsync(int id) // Get item
         {
             var result = await _dbcontext.CatalogItems
                 .Include(x => x.CatalogBrand)
                 .Include(x => x.CatalogType)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            if (result != null) 
-            { 
-                return result; 
-            } 
-            return null;  
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            return null;
         }
 
         public async Task<CatalogType> GetByTypeAsync(string type)
         {
             var result = await _dbcontext.CatalogTypes
                 .FirstOrDefaultAsync(b => b.Type == type);
+
             if (result != null)
             {
                 return result;
             }
+
             return null;
         }
 
         public async Task<List<CatalogType>> GetTypesAsync()
         {
-            return await _dbcontext.CatalogTypes.ToListAsync(); 
+            return await _dbcontext.CatalogTypes.ToListAsync();
         }
     }
 }

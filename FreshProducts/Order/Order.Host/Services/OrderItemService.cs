@@ -27,7 +27,7 @@ public class OrderItemService : BaseDataService<ApplicationDbContext>, IService<
     {
         return await ExecuteSafeAsync(async () =>
         {
-            return await _repository.AddAsync(entity); 
+            return await _repository.AddAsync(entity);
         });
     }
 

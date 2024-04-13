@@ -38,6 +38,7 @@ namespace Catalog.Host.Repositories
                 await _dbContext.SaveChangesAsync();
                 return _result.Id;
             }
+
             return null;
         }
 
@@ -46,7 +47,7 @@ namespace Catalog.Host.Repositories
             _result = await _dbset
                 .FindAsync(id);
 
-            if(_result != null) 
+            if (_result != null)
             {
                 _dbContext.Set<T>().Remove(_result);
                 await _dbContext.SaveChangesAsync();

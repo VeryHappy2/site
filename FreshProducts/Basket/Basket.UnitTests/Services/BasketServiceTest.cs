@@ -7,6 +7,7 @@ namespace Basket.UnitTests.Services
 	public class BasketServiceTest
 	{
 		private readonly IBasketService _service;
+		private readonly Mock<ILogger<BasketService>> _logger;
 
 		private readonly Mock<ICacheService> _cacheService;
 
@@ -22,7 +23,8 @@ namespace Basket.UnitTests.Services
 		public BasketServiceTest()
 		{
 			_cacheService = new Mock<ICacheService>();
-			_service = new BasketService(_cacheService.Object);
+			_logger = new Mock<ILogger<BasketService>>();
+			_service = new BasketService(_cacheService.Object, _logger.Object);
 		}
 
 		[Fact]

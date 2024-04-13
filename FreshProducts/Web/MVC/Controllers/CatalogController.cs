@@ -4,18 +4,18 @@ using MVC.ViewModels;
 using MVC.ViewModels.CatalogViewModels;
 using MVC.ViewModels.Pagination;
 using Newtonsoft.Json;
-using System.Drawing.Printing;
-
 
 namespace MVC.Controllers;
 
 public class CatalogController : Controller
 {
 	private readonly IBasketService _basketService;
-	private  readonly ICatalogService _catalogService;
+	private readonly ICatalogService _catalogService;
 	private readonly ILogger<CatalogController> _logger;
-	public CatalogController(ICatalogService catalogService, 
-        IBasketService basketService, ILogger<CatalogController> logger)
+	public CatalogController(
+		ICatalogService catalogService,
+        IBasketService basketService,
+		ILogger<CatalogController> logger)
     {
         _basketService = basketService;
         _catalogService = catalogService;
@@ -32,8 +32,8 @@ public class CatalogController : Controller
         PaginatedItemsResponse<CatalogItem> catalogItems = await _catalogService.GetItems(page.Value, pageSize.Value, brandFilterApplied, typesFilterApplied, null);
 
 		PaginationInfo info = null;
-		IndexViewModel vm = new IndexViewModel() 
-		{ 
+		IndexViewModel vm = new IndexViewModel()
+		{
 			CatalogItems = null
 		};
 
@@ -59,13 +59,14 @@ public class CatalogController : Controller
 
 		return View(vm);
     }
+
     public async Task<IActionResult> SearchOrAddBasket(string search, int? brandFilterApplied, int? typesFilterApplied, int? groupPage, CatalogItem product, int? page, int? pageSize)
     {
         await Task.Delay(50);
 
 		_logger.LogInformation($"Product: {JsonConvert.SerializeObject(product)}");
 
-		if (product != null) 
+		if (product != null)
         {
 			var basketProduct = new BasketProduct
 			{
@@ -86,9 +87,9 @@ public class CatalogController : Controller
 		pageSize ??= 5;
 		groupPage ??= 0;
 
-		PaginatedItemsResponse<CatalogItem> catalogItems = await _catalogService.GetItems(page.Value, pageSize.Value, brandFilterApplied, typesFilterApplied, search);
+		PaginatedItemsResponse<CatalogItem> catalogItems =
+			await _catalogService.GetItems(page.Value, pageSize.Value, brandFilterApplied, typesFilterApplied, search);
 
-		
         var info = new PaginationInfo
         {
 			TotalPages = (int)Math.Ceiling((decimal)catalogItems.Count / pageSize.Value),
@@ -97,7 +98,6 @@ public class CatalogController : Controller
 			MaxPages = 5,
 			TotalItems = catalogItems.Count,
 		};
-
 
 		var vm = new IndexViewModel
         {

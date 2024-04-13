@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <AssemblyName>Infrastructure</AssemblyName>
         <RootNamespace>Infrastructure</RootNamespace>
-        <!--<CodeAnalysisRuleSet>../../settings.ruleset</CodeAnalysisRuleSet>-->
+        <CodeAnalysisRuleSet>../../settings.ruleset</CodeAnalysisRuleSet>
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 
