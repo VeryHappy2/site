@@ -26,7 +26,7 @@ public class CatalogController : Controller
     {
         await Task.Delay(50);
         page ??= 0;
-        pageSize ??= 4;
+        pageSize ??= 3;
         groupPage ??= 0;
 
         PaginatedItemsResponse<CatalogItem> catalogItems = await _catalogService.GetItems(page.Value, pageSize.Value, brandFilterApplied, typesFilterApplied, null);
@@ -84,7 +84,7 @@ public class CatalogController : Controller
         }
 
 		page ??= 0;
-		pageSize ??= 5;
+		pageSize ??= 3;
 		groupPage ??= 0;
 
 		PaginatedItemsResponse<CatalogItem> catalogItems =
@@ -95,7 +95,7 @@ public class CatalogController : Controller
 			TotalPages = (int)Math.Ceiling((decimal)catalogItems.Count / pageSize.Value),
             GroupPages = groupPage.Value,
 			CurrentPage = page.Value,
-			MaxPages = 5,
+			MaxPages = 4,
 			TotalItems = catalogItems.Count,
 		};
 
