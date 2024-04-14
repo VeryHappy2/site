@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
-        <!--<CodeAnalysisRuleSet>../../settings.ruleset</CodeAnalysisRuleSet>-->
+        <CodeAnalysisRuleSet>../../settings.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>

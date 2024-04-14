@@ -20,12 +20,11 @@ namespace MVC.Controllers
 
 			if (basket == null)
 			{
-                var vmNull = new BasketViewModel
-                {
-                    Data = null,
-                    Amount = 0,
-                    SumPrice = 0
-                };
+                BasketViewModel vmNull = new BasketViewModel
+				{
+					Data = null
+				};
+
 				return View(vmNull);
             }
 

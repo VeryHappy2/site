@@ -29,14 +29,16 @@
 
 @if (Model.Data != null && Context.User.Identity.IsAuthenticated)
 {
-    <div style=" display: flex; justify-content: space-between; height: 45px; background:#dfdfdf">
+    <div style=" display: flex; justify-content: space-between; height: 45px;">
         <p>Sum price: @Model.SumPrice</p>
         <p>Sum amount: @Model.Amount</p>
     </div>
+
     @foreach(BasketProduct item in Model.Data)
     {
         @await Html.PartialAsync("_basketItem", item);
     }
+
     <form asp-controller="Order" asp-action="AddOrder" method="post" style="display: flex;
         justify-content: end;">
         <button class="btn btn-outline-success" type="submit" style="width: 23%;
@@ -54,7 +56,7 @@ else
             <p style="font-size:75px">Please entry to your account</p>
         </div>
     } 
-     else
+    else
     {
         <div style="display: grid;
         place-items: center; height: 700px;">

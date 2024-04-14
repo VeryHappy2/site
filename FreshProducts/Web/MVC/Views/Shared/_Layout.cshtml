@@ -36,6 +36,7 @@
         .catalog-product:hover {
             background-color: #eeeeee;
         }
+
         .footer{
             height: 100px;
             background-color: #eeeeee;
@@ -55,22 +56,20 @@
                     @RenderSection("Header", required: true)
                     @await Html.PartialAsync("_LoginPartial")
                 </div>
-
 			</div>
-            
         </nav>
 		@await RenderSectionAsync("Section", required: false)
     </header>
 
     @RenderBody()
 
-    <footer>
+    @*<footer>
         <p style="display: flex;
         align-items: center;
         justify-content: center;">
             Copyright &copy; @DateTime.Now.Year; FreshProducts. All rights reserved.
         </p>
-    </footer>
+    </footer>*@
 
     <environment names="Development">
         <script src="~/lib/jquery/jquery.js"></script>

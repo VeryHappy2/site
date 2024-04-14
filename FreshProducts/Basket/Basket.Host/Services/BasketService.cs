@@ -86,6 +86,12 @@ public class BasketService : IBasketService
 				basket.Remove(productToRemove);
 			}
 
+			if (!basket.Any())
+			{
+				await _cacheService.RemoveFromCacheAsync(userId);
+				return productToRemove.Amount;
+			}
+
 			await _cacheService.AddOrUpdateAsync(userId, basket);
 			return productToRemove.Amount;
 		}

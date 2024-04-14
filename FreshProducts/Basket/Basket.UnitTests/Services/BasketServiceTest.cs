@@ -11,15 +11,16 @@ namespace Basket.UnitTests.Services
 
 		private readonly Mock<ICacheService> _cacheService;
 
-		List<Product> _products = new List<Product>
-		{ 
+		private List<Product> _products = new List<Product>
+		{
 			new Product
 			{
 				ProductId = 2,
 				Amount = 1,
 			}
 		};
-		Product _product = new Product();
+
+		private Product _product = new Product();
 		public BasketServiceTest()
 		{
 			_cacheService = new Mock<ICacheService>();
@@ -39,6 +40,7 @@ namespace Basket.UnitTests.Services
 
 			_cacheService.Verify(x => x.AddOrUpdateAsync(userId, It.IsAny<List<Product>>()), Times.Once);
 		}
+
 		[Fact]
 		public async Task AddProduct_Failed()
 		{
@@ -47,7 +49,7 @@ namespace Basket.UnitTests.Services
 			_cacheService.Setup(x => x.GetAsync<List<Product>>(It.IsAny<string>()))
 			 .ReturnsAsync((List<Product>)null);
 			_cacheService.Setup(x => x.AddOrUpdateAsync(It.IsAny<string>(), It.IsAny<Product>()));
-			
+
 			var result = await _service.AddProduct(userId, _product);
 			result.Should().Be(false);
 		}
@@ -64,6 +66,7 @@ namespace Basket.UnitTests.Services
 
 			result.Should().NotBeNull();
 		}
+
 		[Fact]
 		public async Task GetProduct_Failed()
 		{
@@ -82,13 +85,14 @@ namespace Basket.UnitTests.Services
 		public async Task RemoveProduct_Success()
 		{
 			var userId = "2131256893";
-			
+
 			_cacheService.Setup(x => x.GetAsync<List<Product>>(It.IsAny<string>()))
 			 .ReturnsAsync(_products);
 			_cacheService.Setup(x => x.AddOrUpdateAsync(It.IsAny<string>(), It.IsAny<List<Product>>()));
 
 			var result = await _service.RemoveProduct(userId, 2);
 
+			_cacheService.Verify(r => r.RemoveFromCacheAsync(userId, It.IsAny<IDatabase>()), Times.Once);
 			result.Should().NotBeNull();
 		}
 
@@ -103,8 +107,10 @@ namespace Basket.UnitTests.Services
 
 			var result = await _service.RemoveProduct(userId, 1);
 
+			_cacheService.Verify(r => r.RemoveFromCacheAsync(userId, It.IsAny<IDatabase>()), Times.Never);
 			result.Should().BeNull();
 		}
+
 		[Fact]
 		public async Task RemoveBasket_Success()
 		{
