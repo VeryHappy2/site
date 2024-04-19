@@ -21,12 +21,13 @@ namespace MVC.Controllers
 
 		public async Task<IActionResult> Index()
         {
-			var order = await _orderService.GetOrderProductsAsync();
+			var orders = await _orderService.GetOrderProductsAsync();
 
 			var vm = new IndexViewModel
 			{
-				Order = order,
+				Orders = orders,
 			};
+
 			return View(vm);
         }
 

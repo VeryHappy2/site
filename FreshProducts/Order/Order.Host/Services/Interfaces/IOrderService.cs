@@ -6,7 +6,7 @@ namespace Order.Host.Services.Interfaces
 {
     public interface IOrderBffService
     {
-		Task<OrderDto?> GetOrdersByUserIdAsync(string orderId);
+		Task<List<OrderDto?>> GetOrdersByUserIdAsync(string orderId);
 		Task<OrderDto?> GetOrdersByIdAsync(int id);
 	}
 }

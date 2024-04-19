@@ -29,13 +29,13 @@ namespace MVC.Controllers
             }
 
 			var amount = basket.Sum(product => product.Amount);
-            var sumPrice = basket.Sum(product => product.ProductPrice);
+            var sumPrice = basket.Sum(product => product.ProductPrice * product.Amount);
 
             var vm = new BasketViewModel
             {
                 Data = basket,
 				Amount = amount,
-				SumPrice = sumPrice
+				SumPrice = sumPrice,
             };
 
             return View(vm);

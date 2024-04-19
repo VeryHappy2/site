@@ -10,7 +10,7 @@
 	<button style="margin: 5px" type="submit" class="btn btn-outline-primary" name="search" value="@Model.Search" asp-route-groupPage="@Model.PaginationItems.GroupPages" asp-route-page="@(Model.PaginationItems.CurrentPage - 1)">Back</button>
 }
 
-@if (Model.PaginationItems.GroupPages > 1)
+@if (Model.PaginationItems.GroupPages >= 1)
 {
 	<button style="margin: 5px" type="submit" class="btn btn-outline-primary" asp-route-groupPage="@(Model.PaginationItems.GroupPages - 1)">...</button>
 }

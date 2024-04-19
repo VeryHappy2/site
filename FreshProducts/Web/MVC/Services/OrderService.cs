@@ -31,9 +31,9 @@ namespace MVC.Services
 				($"{_settings.Value.OrderItemUrl}/addorderitem", HttpMethod.Post, product);
 		}
 
-		public async Task<OrderResponse> GetOrderProductsAsync()
+		public async Task<List<OrderResponse>> GetOrderProductsAsync()
         {
-            return await _httpClient.SendAsync<OrderResponse, object>
+            return await _httpClient.SendAsync<List<OrderResponse>, object>
                 ($"{_settings.Value.OrderUrl}/getordersbyuserid", HttpMethod.Post, null);
         }
     }

@@ -16,5 +16,7 @@ namespace Order.Host.Models.Requests.BaseRequests
 		public int Amount { get; set; }
 		[Required]
 		public int ProductId { get; set; }
+		[Required]
+		public int OrderId { get; set; }
 	}
 }

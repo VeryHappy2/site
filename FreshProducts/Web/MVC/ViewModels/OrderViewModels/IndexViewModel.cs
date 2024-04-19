@@ -4,6 +4,6 @@ namespace MVC.ViewModels.OrderViewModels
 {
 	public class IndexViewModel
 	{
-		public OrderResponse Order { get; set; }
+		public List<OrderResponse> Orders { get; set; }
 	}
 }

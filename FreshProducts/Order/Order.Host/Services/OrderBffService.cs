@@ -24,13 +24,18 @@ public class OrderBffService : BaseDataService<ApplicationDbContext>, IOrderBffS
         _mapper = mapper;
     }
 
-    public async Task<OrderDto?> GetOrdersByUserIdAsync(string id)
+    public async Task<List<OrderDto?>> GetOrdersByUserIdAsync(string userId)
     {
         return await ExecuteSafeAsync(async () =>
         {
-            var result = await _orderBffRepository.GetOrdersByUserIdAsync(id);
+            var result = await _orderBffRepository.GetOrdersByUserIdAsync(userId);
 
-			var mappedResult = _mapper.Map<OrderDto>(result);
+            if (result == null)
+            {
+                return null;
+            }
+
+			var mappedResult = _mapper.Map<List<OrderDto?>>(result).ToList();
 
 			return mappedResult;
 		});

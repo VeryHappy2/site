@@ -26,17 +26,12 @@
 		<button class="btn btn-outline-success" type="submit">Search</button>
 	</form>
 }
-@if (Model.Order != null  && Context.User.Identity.IsAuthenticated)
+@if (Model.Orders != null  && Context.User.Identity.IsAuthenticated)
 {
-	@foreach (OrderItemResponse item in Model.Order.Items)
+	@foreach (OrderItemResponse item in Model.Orders.Select(x => new OrderItemResponse()))
 	{
 		@await Html.PartialAsync("_orderItem", item)
 	}
-
-	<div style=" display: flex; justify-content: space-between; height: 45px;">
-		<p>Sum price: @Model.Order.TotalPriceItems</p>
-		<p>Sum amount: @Model.Order.AmountProducts</p>
-	</div>
 }
 else
 {

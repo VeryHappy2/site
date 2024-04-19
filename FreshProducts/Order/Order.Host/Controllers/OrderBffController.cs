@@ -36,14 +36,16 @@ public class OrderBffController : ControllerBase
 
         _logger.LogInformation($"Data: {JsonConvert.SerializeObject(result)}");
 
-        return Ok(new BaseOrderResponse
+		var orderResponses = result.Select(orderDto => new BaseOrderResponse
 		{
-			Id = result.Id,
-            AmountProducts = result.AmountProducts,
-            TotalPriceItems = result.TotalPriceItems,
-            Items = result.Items,
-            UserId = userId,
-		});
+			Id = orderDto.Id,
+			AmountProducts = orderDto.AmountProducts,
+			TotalPriceItems = orderDto.TotalPriceItems,
+			Items = orderDto.Items,
+			UserId = userId
+		}).ToList();
+
+		return Ok(orderResponses);
     }
 
 	[HttpPost]

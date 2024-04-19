@@ -20,37 +20,45 @@ namespace Order.Host.Repositories
                 .Include(o => o.Items)
                 .FirstOrDefaultAsync(x => x.Id == entity.OrderId);
 
-			if (excitedItem != null)
+            if (excitedItem != null && excitedOrder != null)
             {
-				if (excitedOrder == null)
-				{
-					return null;
-				}
+                excitedItem.Amount += entity.Amount;
+                excitedOrder.AmountProducts += entity.Amount;
+                excitedOrder.TotalPriceItems += entity.Price * entity.Amount;
+                excitedOrder.Items.Add(entity);
 
-				excitedItem.Amount += entity.Amount;
-				excitedOrder.AmountProducts += entity.Amount;
-				excitedOrder.TotalPriceItems += entity.Price * entity.Amount;
-				excitedOrder.Items.Add(entity);
-				await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
-				return entity.Id;
+                return entity.Id;
+            }
+            else if (excitedItem != null && excitedOrder == null)
+            {
+                excitedItem.Amount += entity.Amount;
+
+                await _dbContext.SaveChangesAsync();
+                return entity.Id;
+            }
+            else if (excitedItem == null && excitedOrder == null)
+            {
+				var result = await _dbContext.OrderItemEntity.AddAsync(entity);
+                return result.Entity.Id;
 			}
             else
             {
                 var result = await _dbContext.OrderItemEntity.AddAsync(entity);
 
-				if (result == null)
-				{
-					return null;
-				}
+                if (result == null)
+                {
+                    return null;
+                }
 
-				excitedOrder.AmountProducts += entity.Amount;
+                excitedOrder.AmountProducts += entity.Amount;
                 excitedOrder.TotalPriceItems += entity.Price * entity.Amount;
                 excitedOrder.Items.Add(entity);
                 await _dbContext.SaveChangesAsync();
 
-				return result.Entity.Id;
-			}
+                return result.Entity.Id;
+            }
         }
 
         public async Task<int?> UpdateAsync(int id, OrderItemEntity entity)
@@ -81,12 +89,5 @@ namespace Order.Host.Repositories
 
             return null;
         }
-
-		private async Task<OrderEntity> AddItemToOrderAsync(OrderEntity orderEntity, OrderItemEntity orderItemEntity)
-		{
-			orderEntity.Items.Add(orderItemEntity);
-            await _dbContext.SaveChangesAsync();
-			return orderEntity;
-		}
 	}
 }

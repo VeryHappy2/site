@@ -5,7 +5,7 @@ namespace MVC.Services.Interfaces
 {
     public interface IOrderService
     {
-		Task<OrderResponse> GetOrderProductsAsync();
+		Task<List<OrderResponse>> GetOrderProductsAsync();
 		Task<object> AddOrderItem(BaseOrderItemRequest product);
 		Task<int?> AddOrder(BaseOrderRequest product);
 	}

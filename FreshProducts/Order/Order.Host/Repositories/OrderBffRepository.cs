@@ -14,11 +14,12 @@ namespace Order.Host.Repositories
             _dbContext = context.DbContext;
         }
 
-        public async Task<OrderEntity> GetOrdersByUserIdAsync(string userId)
+        public async Task<List<OrderEntity>> GetOrdersByUserIdAsync(string userId)
         {
             var result = await _dbContext.OrderEntity
-				.Include(o => o.Items)
-				.FirstOrDefaultAsync(x => x.UserId == userId);
+                .Include(o => o.Items)
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
 
             if (result == null)
             {
