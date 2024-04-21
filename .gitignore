@@ -12,6 +12,7 @@
 /build
 obj/
 .vs/
+Solution/
 bin/
 
 # misc
