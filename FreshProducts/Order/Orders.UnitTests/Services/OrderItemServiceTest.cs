@@ -46,8 +46,6 @@ namespace Orders.UnitTests.Services
 			_orderService = new OrderItemService(_dbContextWrapper.Object, _logger.Object, _mapper.Object, _orderRepository.Object);
 		}
 
-
-
 		[Fact]
 		public async Task AddAsync_Success()
 		{
@@ -63,6 +61,7 @@ namespace Orders.UnitTests.Services
 			// assert
 			result.Should().Be(id);
 		}
+
 		[Fact]
 		public async Task AddAsync_Failed()
 		{

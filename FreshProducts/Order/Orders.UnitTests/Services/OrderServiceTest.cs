@@ -31,13 +31,11 @@ public class OrderServiceTest
 
     private OrderEntity _testOrder = new OrderEntity
     {
-
 		Id = 1,
 		AmountProducts = 0,
 		TotalPriceItems = 0,
 		UserId = "123",
 		Items = new List<OrderItemEntity>()
-
 	};
 
     public OrderServiceTest()
@@ -52,8 +50,6 @@ public class OrderServiceTest
 
         _orderService = new OrderService(_dbContextWrapper.Object, _logger.Object, _mapper.Object, _orderRepository.Object);
     }
-
-    
 
     [Fact]
     public async Task AddAsync_Success()
@@ -70,6 +66,7 @@ public class OrderServiceTest
         // assert
         result.Should().Be(id);
     }
+
     [Fact]
     public async Task AddAsync_Failed()
     {

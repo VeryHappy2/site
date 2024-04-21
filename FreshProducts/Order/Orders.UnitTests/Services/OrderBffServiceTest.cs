@@ -8,7 +8,6 @@ using Order.Host.Services.Interfaces;
 
 namespace Orders.UnitTests.Services
 {
-
 	public class OrderBffServiceTest
 	{
 		private readonly IOrderBffService _orderBffService;
@@ -54,40 +53,42 @@ namespace Orders.UnitTests.Services
 			_orderBffService = new OrderBffService(_dbContextWrapper.Object, _logger.Object, _mapper.Object, _orderBffRepository.Object);
 		}
 
-		//[Fact]
-		//public async Task GetOrdersByUserIdAsync_Success()
-		//{
-		//	// arrange
-		//	var ordersDto = new List<OrderDto>();
-		//	foreach (OrderEntity order in _testOrders)
-		//	{
-		//		ordersDto = new List<OrderDto>().Select(x => new OrderDto
-		//		{
-		//			Id = order.Id,
-		//			Items = order.Items.Select(x => new OrderItemDto
-		//			{
-		//				OrderId = order.Id,
-		//				Amount = order.AmountProducts,
-		//				Id = order.Id,
-		//				CreatedAt = order.CreatedAt
-		//			})
-		//		});
-		//	}
+		[Fact]
+		public async Task GetOrdersByUserIdAsync_Success()
+		{
+			// arrange
+			var ordersDto = new List<OrderDto>();
 
+			ordersDto = _testOrders.Select(orderEntity => new OrderDto
+			{
+				Id = orderEntity.Id,
+				AmountProducts = orderEntity.AmountProducts,
+				TotalPriceItems = orderEntity.TotalPriceItems,
+				UserId = orderEntity.UserId,
+				Items = orderEntity.Items.Select(item => new OrderItemDto
+				{
+					Id = item.Id,
+					Amount = item.Amount,
+					CreatedAt = item.CreatedAt,
+					Name = item.Name,
+					OrderId = item.OrderId,
+					Price = item.Price,
+				}).ToList()
+			}).ToList();
 
-		//	_orderBffRepository.Setup(s => s.GetOrdersByUserIdAsync(
-		//		It.IsAny<string>())).ReturnsAsync(_testOrders);
+            _orderBffRepository.Setup(s => s.GetOrdersByUserIdAsync(
+				It.IsAny<string>())).ReturnsAsync(_testOrders);
 
-		//	_mapper.Setup(s => s.Map<OrderDto>(
-		//		It.Is<OrderEntity>(i => i.Equals(_testOrders)))).Returns(ordersDto);
+			_mapper.Setup(s => s.Map<List<OrderDto>>(
+				It.Is<List<OrderEntity>>(i => i.Equals(_testOrders)))).Returns(ordersDto);
 
-		//	// act
-		//	var result = await _orderBffService.GetOrdersByUserIdAsync(orderDto.UserId);
+			// act
+			var result = await _orderBffService.GetOrdersByUserIdAsync("123");
 
-		//	// assert
-		//	result.Should()
-		//		.NotBeNull();
-		//}
+			// assert
+			result.Should()
+				.NotBeNull();
+		}
 
 		[Fact]
 		public async Task GetOrdersByUserIdAsync_Failed()
@@ -96,13 +97,13 @@ namespace Orders.UnitTests.Services
 			string userId = null;
 
 			_testOrders = null;
-			OrderDto orderDto = null;
+			List<OrderDto> orderDto = null;
 
 			_orderBffRepository.Setup(s => s.GetOrdersByUserIdAsync(
 				It.IsAny<string>())).ReturnsAsync(_testOrders);
 
-			_mapper.Setup(s => s.Map<OrderDto>(
-				It.Is<OrderEntity>(i => i.Equals(_testOrders)))).Returns(orderDto);
+			_mapper.Setup(s => s.Map<List<OrderDto>>(
+				It.Is<List<OrderEntity>>(i => i.Equals(_testOrders)))).Returns(orderDto);
 
 			// act
 			var result = await _orderBffService.GetOrdersByUserIdAsync(userId);
@@ -112,6 +113,4 @@ namespace Orders.UnitTests.Services
 				.BeNull();
 		}
 	}
-
-
 }
