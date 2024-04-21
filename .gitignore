@@ -10,8 +10,11 @@
 
 # production
 /build
+obj/
+bin/
 
 # misc
+*.dll
 .DS_Store
 .env.local
 .env.development.local
