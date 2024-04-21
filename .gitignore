@@ -15,6 +15,7 @@ obj/
 bin/
 
 # misc
+*.sln
 *.dll
 .DS_Store
 .env.local
