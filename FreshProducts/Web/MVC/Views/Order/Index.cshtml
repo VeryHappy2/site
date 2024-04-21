@@ -28,7 +28,18 @@
 }
 @if (Model.Orders != null  && Context.User.Identity.IsAuthenticated)
 {
-	@foreach (OrderItemResponse item in Model.Orders.Select(x => new OrderItemResponse()))
+	List<OrderItemResponse> orderItemResponses = Model.Orders
+	.SelectMany(order => order.Items) 
+	.Select(item => new OrderItemResponse{
+		Id = item.Id, 
+		Amount = item.Amount, 
+		CreatedAt = item.CreatedAt, 
+		Name = item.Name, 
+		Price = item.Price
+	})
+	.ToList();
+
+	@foreach (OrderItemResponse item in orderItemResponses)
 	{
 		@await Html.PartialAsync("_orderItem", item)
 	}

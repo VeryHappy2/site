@@ -2,6 +2,7 @@
 using MVC.Services.Interfaces;
 using MVC.ViewModels.BasketViewModels;
 using MVC.Models.Requests;
+using MVC.Models.Reqeusts;
 
 namespace MVC.Controllers
 {
@@ -47,7 +48,7 @@ namespace MVC.Controllers
 			return RedirectToAction("Index", "Basket");
 		}
 
-		public async Task<IActionResult> DeleteProduct(ByIdRequest productId)
+		public async Task<IActionResult> DeleteProduct(ByIdrequest productId)
 		{
 			await _basketService.DeleteProductAsync(productId);
 			return RedirectToAction("Index", "Basket");

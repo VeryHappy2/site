@@ -2,7 +2,7 @@ using MVC.Host.ViewModels;
 using MVC.Host.Services.Interfaces;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
-using MVC.Host.Models.Requests;
+using Basket.Host.Models.Reqeusts;
 
 namespace MVC.Host.Controllers;
 
@@ -34,6 +34,7 @@ public class BasketBffController : ControllerBase
 		_logger.LogInformation($"UserId: {userId}" + $"\n Data of Product: {data}");
 		if (data == null)
 		{
+			_logger.LogInformation($"Data is empty");
 			return BadRequest();
 		}
 
@@ -51,6 +52,7 @@ public class BasketBffController : ControllerBase
 
 		if (response == null)
 		{
+			_logger.LogInformation($"User id {userId} doesn't contain products");
 			return NotFound();
 		}
 
@@ -72,7 +74,7 @@ public class BasketBffController : ControllerBase
 	[ProducesResponseType(typeof(List<Product>), (int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.NotFound)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-	public async Task<IActionResult> RemoveProduct(ByIdRequest productId)
+	public async Task<IActionResult> RemoveProduct(ByIdrequest productId)
 	{
 		if (productId == null)
 		{

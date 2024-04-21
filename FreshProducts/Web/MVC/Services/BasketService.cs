@@ -1,4 +1,5 @@
-﻿using MVC.Models.Requests;
+﻿using MVC.Models.Reqeusts;
+using MVC.Models.Requests;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
 
@@ -24,7 +25,7 @@ namespace MVC.Services
 				($"{_settings.Value.BasketUrl}/addorupdateproduct", HttpMethod.Post, product);
 		}
 
-		public async Task DeleteProductAsync(ByIdRequest productId)
+		public async Task DeleteProductAsync(ByIdrequest productId)
 		{
 			await Task.Delay(150);
 

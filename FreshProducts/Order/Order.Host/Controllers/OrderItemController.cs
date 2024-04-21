@@ -10,7 +10,7 @@ using Order.Host.Services.Interfaces;
 namespace Order.Host.Controllers;
 
 [ApiController]
-[Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
+[Authorize(Policy = AuthPolicy.AllowClientPolicy)]
 [Scope("order.item")]
 [Route(ComponentDefaults.DefaultRoute)]
 public class OrderItemController : ControllerBase
