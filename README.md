@@ -6,6 +6,7 @@ Need to path these lines
 0.0.0.0 www.alevelwebsite.com
 192.168.0.4 www.alevelwebsite.com
 #docker (to start) 
+
 docker-compose build or docker-compose build --no-cache
 
 docker-compose up
