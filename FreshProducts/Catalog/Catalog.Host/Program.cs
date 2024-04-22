@@ -6,8 +6,6 @@ using Catalog.Host.Services;
 using Catalog.Host.Services.Interfaces;
 using Infrastructure.Extensions;
 using Infrastructure.Filters;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Catalog.Host.Repositories.Abstractions;
 

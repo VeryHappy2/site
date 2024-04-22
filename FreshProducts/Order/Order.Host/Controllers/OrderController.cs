@@ -52,6 +52,7 @@ public class OrderController : ControllerBase
 
         if (result == null)
         {
+            _logger.LogError("Order wasn't added");
             return BadRequest();
         }
 
@@ -87,10 +88,11 @@ public class OrderController : ControllerBase
 
         if (result == null)
         {
+            _logger.LogError("Order wasn't updated.");
             return BadRequest();
         }
 
-        _logger.LogInformation($"id of a new order: {result}");
+        _logger.LogInformation($"id of a new order: {result}.");
         return Ok(new BaseResponse<int?> { Id = result });
 	}
 
@@ -104,10 +106,11 @@ public class OrderController : ControllerBase
 
 		if (result == null)
 		{
-			return NotFound();
+            _logger.LogError($"Order wasn't found.");
+            return NotFound();
 		}
 
-		_logger.LogInformation($"Status of order: {result}");
+		_logger.LogInformation($"Status of order: {result}.");
 
 		return Ok(result);
 	}

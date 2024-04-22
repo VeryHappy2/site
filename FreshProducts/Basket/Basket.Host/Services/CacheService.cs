@@ -1,6 +1,5 @@
-using MVC.Host.Configurations;
+using Infrastructure.Configuration;
 using MVC.Host.Services.Interfaces;
-using Newtonsoft.Json;
 using StackExchange.Redis;
 
 namespace MVC.Host.Services

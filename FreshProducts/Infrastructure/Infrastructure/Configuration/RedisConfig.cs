@@ -1,4 +1,4 @@
-namespace MVC.Host.Configurations;
+namespace Infrastructure.Configuration;
 
 public class RedisConfig
 {

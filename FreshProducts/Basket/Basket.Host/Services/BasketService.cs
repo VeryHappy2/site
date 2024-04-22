@@ -56,8 +56,7 @@ public class BasketService : IBasketService
 
 	public async Task<List<Product>> GetProducts(string userId)
 	{
-		List<Product> products = await _cacheService.GetAsync<List<Product>>(userId);
-        return products;
+        return await _cacheService.GetAsync<List<Product>>(userId);
 	}
 
 	public async Task<string?> RemoveBasket(string userId)

@@ -54,6 +54,8 @@ public class CatalogController : Controller
 				PaginationItems = info,
 				Brands = await _catalogService.GetBrands(),
 				Types = await _catalogService.GetTypes(),
+				BrandFilterApplied = brandFilterApplied,
+				TypesFilterApplied = typesFilterApplied,
 			};
 		}
 
@@ -106,6 +108,8 @@ public class CatalogController : Controller
 			Brands = await _catalogService.GetBrands(),
 			Types = await _catalogService.GetTypes(),
 			Search = search,
+            BrandFilterApplied = brandFilterApplied,
+            TypesFilterApplied = typesFilterApplied,
         };
 
         return View("Index", vm);

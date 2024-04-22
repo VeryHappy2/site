@@ -28,19 +28,24 @@ public class CatalogItemController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> Add(BaseProductRequest request)
     {
         var result = await _catalogItemService.Add(request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
-        if (result != null)
+
+        if (result == null)
         {
-            _logger.LogInformation($"Catalog item was added with id: {result}");
+            _logger.LogError($"Catalog item wasn't added");
+            return BadRequest(result);
         }
 
+        _logger.LogInformation($"Catalog item was added, id: {result}");
         return Ok(new BaseResponse<int?>() { Id = result });
     }
 
     [HttpPost]
     [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Update(UpdateProductRequest request)
     {
         var result = await _catalogItemService.Update(request.Id, new CatalogItem
@@ -54,20 +59,24 @@ public class CatalogItemController : ControllerBase
             PictureFileName = request.PictureFileName
         });
 
-        if (result != null)
+        if (result == null)
         {
-            _logger.LogInformation($"Catalog item was updated with id: {result}");
+            _logger.LogError($"Catalog item wasn't updated, id of item: {request.Id}");
+            return NotFound();
         }
 
+        _logger.LogInformation($"Catalog item was updated, id of item: {request.Id}");
         return Ok(new BaseResponse<int?>() { Id = result });
     }
 
     [HttpPost]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Delete(ByIdRequest request)
     {
         var result = await _catalogItemService.Delete(request.Id);
         if (result == null)
         {
+            _logger.LogError($"Catalog item wasn't updated, id of item: {request.Id}");
             return NotFound();
         }
 

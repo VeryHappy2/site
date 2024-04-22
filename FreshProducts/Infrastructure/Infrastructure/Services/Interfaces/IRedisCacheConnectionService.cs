@@ -1,6 +1,6 @@
 using StackExchange.Redis;
 
-namespace MVC.Host.Services.Interfaces
+namespace Infrastructure.Services.Interfaces
 {
     public interface IRedisCacheConnectionService
     {

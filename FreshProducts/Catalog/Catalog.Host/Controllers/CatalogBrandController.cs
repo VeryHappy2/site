@@ -27,41 +27,48 @@ public class CatalogBrandController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> Add(BaseBrandRequest request)
     {
         int? result = await _catalogBrandService.Add(request.Brand);
 
         if (result == null)
         {
-            return NotFound();
+            _logger.LogError($"Brand wasn't added");
+            return BadRequest();
         }
 
-        _logger.LogInformation($"Brand was added with id: {result}");
+        _logger.LogInformation($"Brand was added, id: {result}");
 
         return Ok(new BaseResponse<int?>() { Id = result });
     }
 
     [HttpPost]
     [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Update(UpdateBrandRequest request)
     {
         int? result = await _catalogBrandService.Update(request.Id, request.Brand);
+
         if (result == null)
         {
+            _logger.LogError($"Brand wasn't found, id of request brand: {request.Id}");
             return NotFound();
         }
 
-        _logger.LogInformation($"Brand was updated with id: {result}");
+        _logger.LogInformation($"Brand was updated with id: {request.Id}");
         return Ok(new BaseResponse<int?>() { Id = result });
     }
 
     [HttpPost]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Delete(ByIdRequest request)
     {
         string result = await _catalogBrandService.Delete(request.Id);
 
         if (result == null)
         {
+            _logger.LogError($"Brand wasn't found, id: {result}");
             return NotFound();
         }
 

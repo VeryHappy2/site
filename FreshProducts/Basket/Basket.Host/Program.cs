@@ -1,9 +1,9 @@
-using MVC.Host.Configurations;
 using MVC.Host.Services;
 using MVC.Host.Services.Interfaces;
 using Infrastructure.Extensions;
 using Infrastructure.Filters;
 using Microsoft.OpenApi.Models;
+using Infrastructure.Configuration;
 
 var configuration = GetConfiguration();
 

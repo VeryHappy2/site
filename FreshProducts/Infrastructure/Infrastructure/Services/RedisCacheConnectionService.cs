@@ -1,8 +1,9 @@
-using MVC.Host.Configurations;
-using MVC.Host.Services.Interfaces;
+using Infrastructure.Configuration;
+using Infrastructure.Services.Interfaces;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
-namespace MVC.Host.Services
+namespace Infrastructure.Services
 {
     public class RedisCacheConnectionService : IRedisCacheConnectionService, IDisposable
     {

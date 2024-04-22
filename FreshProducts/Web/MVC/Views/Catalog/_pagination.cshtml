@@ -22,7 +22,9 @@
 			name="search" value="@Model.Search"
 			asp-route-groupPage="@Model.PaginationItems.GroupPages"
 			asp-route-page="@i"
-				class="btn @(i == Model.PaginationItems.CurrentPage ? "btn-primary" : "btn-outline-primary")">
+			asp-route-brandFilterApplied="@Model.BrandFilterApplied"
+			asp-route-typesFilterApplied="@Model.TypesFilterApplied"
+			class="btn @(i == Model.PaginationItems.CurrentPage ? "btn-primary" : "btn-outline-primary")">
 			@(i + 1)
 		</button>
 	}
@@ -36,8 +38,6 @@
 	{
 		break;
 	}
-
-	
 }
 @if (Model.PaginationItems.CurrentPage < Model.PaginationItems.TotalPages - 1)
 {

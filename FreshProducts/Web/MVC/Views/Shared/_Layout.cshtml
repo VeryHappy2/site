@@ -51,25 +51,14 @@
     height: auto" class="bg-body-tertiary">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <div class="collapse navbar-collapse" style="
-                     justify-content: space-between;">
-                    @RenderSection("Header", required: true)
-                    @await Html.PartialAsync("_LoginPartial")
-                </div>
+                @RenderSection("Header", required: true)
+                @await Html.PartialAsync("_LoginPartial")
 			</div>
         </nav>
 		@await RenderSectionAsync("Section", required: false)
     </header>
 
     @RenderBody()
-
-    @*<footer>
-        <p style="display: flex;
-        align-items: center;
-        justify-content: center;">
-            Copyright &copy; @DateTime.Now.Year; FreshProducts. All rights reserved.
-        </p>
-    </footer>*@
 
     <environment names="Development">
         <script src="~/lib/jquery/jquery.js"></script>

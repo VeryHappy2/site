@@ -5,7 +5,6 @@ using Catalog.Host.Models.Enums;
 using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Requests.BaseRequests;
 using Catalog.Host.Models.Requests.Paginates;
-using Catalog.Host.Models.Response;
 using Catalog.Host.Models.Response.BaseResponses;
 using Catalog.Host.Models.Response.Paginations;
 using Catalog.Host.Services.Interfaces;
@@ -39,7 +38,8 @@ public class CatalogBffController : ControllerBase
         var result = await _catalogService.GetCatalogItemsAsync(request.PageSize, request.PageIndex, request.Filters, request.Search);
         if (result == null)
         {
-             return NotFound();
+            _logger.LogError("Wasn't found any products");
+            return NotFound();
         }
 
         foreach (var item in result.Data)
@@ -58,10 +58,11 @@ public class CatalogBffController : ControllerBase
         var result = await _catalogService.GetById(request.Id);
         if (result == null)
         {
+            _logger.LogError($"Id: {request.Id} doesn't contain any catalog item");
             return NotFound();
         }
 
-        _logger.LogInformation($"Catalog item was got object with name: {result}");
+        _logger.LogInformation($"Catalog item was got by id: {request.Id}");
         return Ok(result);
     }
 
@@ -74,6 +75,7 @@ public class CatalogBffController : ControllerBase
 
         if (result == null)
         {
+            _logger.LogError("Wasn't found brand");
             return NotFound();
         }
 
@@ -89,6 +91,7 @@ public class CatalogBffController : ControllerBase
         var result = await _catalogService.GetByType(request.Type);
         if (result == null)
         {
+            _logger.LogError("Wasn't found type");
             return NotFound();
         }
 
@@ -106,6 +109,7 @@ public class CatalogBffController : ControllerBase
 
         if (result == null)
         {
+            _logger.LogError("Wasn't found any brands");
             return NotFound();
         }
 
@@ -127,6 +131,7 @@ public class CatalogBffController : ControllerBase
 
         if (result == null)
         {
+            _logger.LogError("Wasn't found any types");
             return NotFound();
         }
 
