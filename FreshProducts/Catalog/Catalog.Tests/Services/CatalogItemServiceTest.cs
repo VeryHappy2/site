@@ -6,9 +6,8 @@ namespace Catalog.UnitTest.Services;
 
 public class CatalogItemServiceTest
 {
-    private readonly ICatalogItemService _catalogService;
+    private readonly IService<CatalogItem> _catalogService;
 
-    private readonly Mock<ICatalogItemRepository> _catalogItemRepository;
     private readonly Mock<IDbContextWrapper<ApplicationDbContext>> _dbContextWrapper;
     private readonly Mock<ILogger<CatalogService>> _logger;
     private readonly Mock<IRepository<CatalogItem>> _catalogRepository;
@@ -37,7 +36,6 @@ public class CatalogItemServiceTest
 
     public CatalogItemServiceTest()
     {
-        _catalogItemRepository = new Mock<ICatalogItemRepository>();
         _dbContextWrapper = new Mock<IDbContextWrapper<ApplicationDbContext>>();
         _logger = new Mock<ILogger<CatalogService>>();
         _catalogRepository = new Mock<IRepository<CatalogItem>>();
@@ -45,7 +43,7 @@ public class CatalogItemServiceTest
         var dbContextTransaction = new Mock<IDbContextTransaction>();
         _dbContextWrapper.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransaction.Object);
 
-        _catalogService = new CatalogItemService(_dbContextWrapper.Object, _logger.Object, _catalogItemRepository.Object, _catalogRepository.Object);
+        _catalogService = new CatalogItemService(_dbContextWrapper.Object, _logger.Object, _catalogRepository.Object);
     }
 
     [Fact]
@@ -54,17 +52,11 @@ public class CatalogItemServiceTest
         // arrange
         var testResult = 1;
 
-        _catalogItemRepository.Setup(s => s.Add(
-            It.IsAny<string>(),
-            It.IsAny<string>(),
-            It.IsAny<decimal>(),
-            It.IsAny<int>(),
-            It.IsAny<int>(),
-            It.IsAny<int>(),
-            It.IsAny<string>())).ReturnsAsync(testResult);
+        _catalogRepository.Setup(s => s.AddAsync(
+            It.IsAny<CatalogItem>())).ReturnsAsync(testResult);
 
         // act
-        var result = await _catalogService.Add(_testItemAdd.Name, _testItemAdd.Description, _testItemAdd.Price, _testItemAdd.AvailableStock, _testItemAdd.CatalogBrandId, _testItemAdd.CatalogTypeId, _testItemAdd.PictureFileName);
+        var result = await _catalogService.Add(_testItemAdd);
 
         // assert
         result.Should().Be(testResult);
@@ -76,17 +68,11 @@ public class CatalogItemServiceTest
         // arrange
         int? testResult = null;
 
-        _catalogItemRepository.Setup(s => s.Add(
-            It.IsAny<string>(),
-            It.IsAny<string>(),
-            It.IsAny<decimal>(),
-            It.IsAny<int>(),
-            It.IsAny<int>(),
-            It.IsAny<int>(),
-            It.IsAny<string>())).ReturnsAsync(testResult);
+        _catalogRepository.Setup(s => s.AddAsync(
+            It.IsAny<CatalogItem>())).ReturnsAsync(testResult);
 
         // act
-        var result = await _catalogService.Add(_testItemAdd.Name, _testItemAdd.Description, _testItemAdd.Price, _testItemAdd.AvailableStock, _testItemAdd.CatalogBrandId, _testItemAdd.CatalogTypeId, _testItemAdd.PictureFileName);
+        var result = await _catalogService.Add(_testItemAdd);
 
         // assert
         result.Should().Be(testResult);
@@ -99,11 +85,11 @@ public class CatalogItemServiceTest
         int id = 1;
         _testItemUpdate.Id = id;
 
-        _catalogRepository.Setup(x => x.UpdateAsync(It.Is<int>(x => x == id), It.IsAny<CatalogItem>()))
-                      .ReturnsAsync((int id, CatalogItem entity) => id);
+        _catalogRepository.Setup(x => x.UpdateAsync(It.IsAny<CatalogItem>()))
+                      .ReturnsAsync((CatalogItem entity) => id);
 
         // act
-        var result = await _catalogService.Update(id, _testItemUpdate);
+        var result = await _catalogService.Update(_testItemUpdate);
 
         // assert
         result.Should().Be(id);
@@ -113,14 +99,13 @@ public class CatalogItemServiceTest
     public async Task UpdateAsync_Failed()
     {
         // arrange
-        int id = 1000;
-        _testItemUpdate.Id = id;
+        _testItemUpdate = null;
 
-        _catalogRepository.Setup(x => x.UpdateAsync(It.Is<int>(x => x == id), It.IsAny<CatalogItem>()))
-                      .ReturnsAsync((int id, CatalogItem entity) => null);
+        _catalogRepository.Setup(x => x.UpdateAsync(It.IsAny<CatalogItem>()))
+                      .ReturnsAsync((CatalogItem entity) => null);
 
         // act
-        var result = await _catalogService.Update(id, _testItemUpdate);
+        var result = await _catalogService.Update(_testItemUpdate);
 
         // assert
         result.Should().BeNull();
@@ -131,7 +116,7 @@ public class CatalogItemServiceTest
     {
         // arrange
         int id = 1;
-        string item = String.Empty;
+        string item = "";
         string status = $"Object with id: {id} was saccussfully removed";
 
         _catalogRepository.Setup(x => x.DeleteAsync(It.Is<int>(x => x == id)))
@@ -149,7 +134,7 @@ public class CatalogItemServiceTest
     {
         // arrange
         int id = 10000000;
-        string item = String.Empty;
+        string item = "";
         string status = $"Id: {id} wasn't found";
 
         _catalogRepository.Setup(x => x.DeleteAsync(It.Is<int>(x => x == id)))
@@ -161,8 +146,4 @@ public class CatalogItemServiceTest
         // assert
         result.Should().Be(status);
     }
-
-
-
-
 }

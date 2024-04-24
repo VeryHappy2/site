@@ -9,7 +9,6 @@ namespace Catalog.Host.Services;
 
 public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogService
 {
-    private readonly ICatalogItemRepository _catalogItemRepository;
     private readonly IMapper _mapper;
     private readonly ICatalogBffRepository _catalogBffService;
     private readonly IDbContextWrapper<ApplicationDbContext> _dbContextWrapper;
@@ -18,13 +17,11 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
         IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
         ILogger<BaseDataService<ApplicationDbContext>> logger,
         ICatalogBffRepository catalogBffService,
-        ICatalogItemRepository catalogItemRepository,
         IMapper mapper)
         : base(dbContextWrapper, logger)
     {
         _dbContextWrapper = dbContextWrapper;
         _catalogBffService = catalogBffService;
-        _catalogItemRepository = catalogItemRepository;
         _mapper = mapper;
     }
 
@@ -48,7 +45,7 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
                 }
             }
 
-            var result = await _catalogItemRepository.GetByPageAsync(pageIndex, pageSize, brandFilter, typeFilter, search);
+            var result = await _catalogBffService.GetByPageAsync(pageIndex, pageSize, brandFilter, typeFilter, search);
 
             if (result == null)
             {

@@ -5,7 +5,7 @@ namespace Catalog.UnitTest.Services;
 
 public class CatalogTypeServiceTest
 {
-    private readonly ICatalogTypeService _catalogService;
+    private readonly IService<CatalogType> _catalogService;
 
     private readonly Mock<IDbContextWrapper<ApplicationDbContext>> _dbContextWrapper;
     private readonly Mock<ILogger<CatalogService>> _logger;
@@ -24,12 +24,14 @@ public class CatalogTypeServiceTest
         _catalogService = new CatalogTypeService(_dbContextWrapper.Object, _logger.Object,  _catalogRepository.Object);
     }
 
-
     [Fact]
     public async Task AddAsync_Success()
     {
         // arrange
-        string testType = "newType";
+        CatalogType testType = new CatalogType
+        {
+            Type = "sometype"
+        };
         int id = 0;
 
         _catalogRepository.Setup(x => x.AddAsync(It.IsAny<CatalogType>()))
@@ -41,11 +43,12 @@ public class CatalogTypeServiceTest
         // assert
         result.Should().Be(id);
     }
+
     [Fact]
     public async Task AddAsync_Failed()
     {
         // arrange
-        string testType = "newType";
+        CatalogType testType = null;
         int? id = null;
 
         _catalogRepository.Setup(x => x.AddAsync(It.IsAny<CatalogType>()))
@@ -66,11 +69,11 @@ public class CatalogTypeServiceTest
         _testObject.Id = id;
         _testObject.Type = "updatedType";
 
-        _catalogRepository.Setup(x => x.UpdateAsync(It.Is<int>(x => x == id), It.IsAny<CatalogType>()))
-                      .ReturnsAsync((int id, CatalogType entity) => id);
+        _catalogRepository.Setup(x => x.UpdateAsync(It.IsAny<CatalogType>()))
+                      .ReturnsAsync((CatalogType entity) => id);
 
         // act
-        var result = await _catalogService.Update(id, _testObject.Type);
+        var result = await _catalogService.Update(_testObject);
 
         // assert
         result.Should().Be(id);
@@ -81,13 +84,13 @@ public class CatalogTypeServiceTest
     {
         // arrange
         int id = 1000;
-        _testObject.Type = "Fail";
+        _testObject = null;
 
-        _catalogRepository.Setup(x => x.UpdateAsync(It.Is<int>(x => x == id), It.IsAny<CatalogType>()))
-                      .ReturnsAsync((int id, CatalogType entity) => null);
+        _catalogRepository.Setup(x => x.UpdateAsync(It.IsAny<CatalogType>()))
+                      .ReturnsAsync((CatalogType entity) => null);
 
         // act
-        var result = await _catalogService.Update(id, _testObject.Type);
+        var result = await _catalogService.Update(_testObject);
 
         // assert
         result.Should().BeNull();

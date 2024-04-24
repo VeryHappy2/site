@@ -25,10 +25,10 @@ namespace Catalog.Host.Repositories
             return item.Entity.Id;
         }
 
-        public async Task<int?> UpdateAsync(int id, T entity)
+        public async Task<int?> UpdateAsync(T entity)
         {
             _result = await _dbset
-                .FindAsync(id);
+                .FindAsync(entity.Id);
 
             if (_result != null)
             {

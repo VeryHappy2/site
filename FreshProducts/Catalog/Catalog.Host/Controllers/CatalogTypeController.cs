@@ -1,3 +1,4 @@
+using Catalog.Host.Data.Entities;
 using Catalog.Host.Models.BaseRequests;
 using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Requests.Update;
@@ -15,11 +16,11 @@ namespace Catalog.Host.Controllers;
 public class CatalogTypeController : ControllerBase
 {
     private readonly ILogger<CatalogTypeController> _logger;
-    private readonly ICatalogTypeService _catalogTypeService;
+    private readonly IService<CatalogType> _catalogTypeService;
 
     public CatalogTypeController(
         ILogger<CatalogTypeController> logger,
-        ICatalogTypeService catalogTypeService)
+        IService<CatalogType> catalogTypeService)
     {
         _catalogTypeService = catalogTypeService;
         _logger = logger;
@@ -30,7 +31,10 @@ public class CatalogTypeController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> Add(BaseTypeRequest request)
     {
-        int? result = await _catalogTypeService.Add(request.Type);
+        int? result = await _catalogTypeService.Add(new CatalogType
+        {
+            Type = request.Type,
+        });
 
         if (result == null)
         {
@@ -47,7 +51,11 @@ public class CatalogTypeController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Update(UpdateTypeRequest request)
     {
-        int? result = await _catalogTypeService.Update(request.Id, request.Type);
+        int? result = await _catalogTypeService.Update(new CatalogType
+        {
+            Id = request.Id,
+            Type = request.Type,
+        });
 
         if (result == null)
         {

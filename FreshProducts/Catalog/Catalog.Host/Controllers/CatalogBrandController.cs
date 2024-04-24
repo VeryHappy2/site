@@ -1,3 +1,4 @@
+using Catalog.Host.Data.Entities;
 using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Requests.BaseRequests;
 using Catalog.Host.Models.Requests.Update;
@@ -15,11 +16,11 @@ namespace Catalog.Host.Controllers;
 public class CatalogBrandController : ControllerBase
 {
     private readonly ILogger<CatalogBrandController> _logger;
-    private readonly ICatalogTypeService _catalogBrandService;
+    private readonly IService<CatalogBrand> _catalogBrandService;
 
     public CatalogBrandController(
         ILogger<CatalogBrandController> logger,
-        ICatalogTypeService catalogBrandService)
+        IService<CatalogBrand> catalogBrandService)
     {
         _catalogBrandService = catalogBrandService;
         _logger = logger;
@@ -30,7 +31,10 @@ public class CatalogBrandController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> Add(BaseBrandRequest request)
     {
-        int? result = await _catalogBrandService.Add(request.Brand);
+        int? result = await _catalogBrandService.Add(new CatalogBrand
+        {
+            Brand = request.Brand,
+        });
 
         if (result == null)
         {
@@ -48,7 +52,11 @@ public class CatalogBrandController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Update(UpdateBrandRequest request)
     {
-        int? result = await _catalogBrandService.Update(request.Id, request.Brand);
+        int? result = await _catalogBrandService.Update(new CatalogBrand
+        {
+            Id = request.Id,
+            Brand = request.Brand,
+        });
 
         if (result == null)
         {

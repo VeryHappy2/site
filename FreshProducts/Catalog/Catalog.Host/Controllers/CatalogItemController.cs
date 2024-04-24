@@ -16,11 +16,11 @@ namespace Catalog.Host.Controllers;
 public class CatalogItemController : ControllerBase
 {
     private readonly ILogger<CatalogItemController> _logger;
-    private readonly ICatalogItemService _catalogItemService;
+    private readonly IService<CatalogItem> _catalogItemService;
 
     public CatalogItemController(
         ILogger<CatalogItemController> logger,
-        ICatalogItemService catalogItemService)
+        IService<CatalogItem> catalogItemService)
     {
         _logger = logger;
         _catalogItemService = catalogItemService;
@@ -31,7 +31,16 @@ public class CatalogItemController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> Add(BaseProductRequest request)
     {
-        var result = await _catalogItemService.Add(request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
+        var result = await _catalogItemService.Add(new CatalogItem
+        {
+            Name = request.Name,
+            CatalogBrandId = request.CatalogBrandId,
+            CatalogTypeId = request.CatalogTypeId,
+            AvailableStock = request.AvailableStock,
+            Description = request.Description,
+            PictureFileName = request.PictureFileName,
+            Price = request.Price,
+        });
 
         if (result == null)
         {
@@ -48,8 +57,9 @@ public class CatalogItemController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Update(UpdateProductRequest request)
     {
-        var result = await _catalogItemService.Update(request.Id, new CatalogItem
+        var result = await _catalogItemService.Update(new CatalogItem
         {
+            Id = request.Id,
             Name = request.Name,
             Description = request.Description,
             Price = request.Price,

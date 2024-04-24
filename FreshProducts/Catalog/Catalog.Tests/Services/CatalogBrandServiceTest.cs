@@ -5,7 +5,7 @@ namespace Catalog.UnitTest.Services;
 
 public class CatalogBrandServiceTest
 {
-    private readonly ICatalogBrandService _catalogService;
+    private readonly IService<CatalogBrand> _catalogService;
 
     private readonly Mock<IDbContextWrapper<ApplicationDbContext>> _dbContextWrapper;
     private readonly Mock<ILogger<CatalogService>> _logger;
@@ -24,12 +24,14 @@ public class CatalogBrandServiceTest
         _catalogService = new CatalogBrandService(_dbContextWrapper.Object, _logger.Object,  _catalogRepository.Object);
     }
 
-
     [Fact]
     public async Task AddAsync_Success()
     {
         // arrange
-        string testType = "newBrand";
+        CatalogBrand testType = new CatalogBrand
+        {
+            Brand = "newBrand"
+        };
         int id = 0;
 
         _catalogRepository.Setup(x => x.AddAsync(It.IsAny<CatalogBrand>()))
@@ -41,11 +43,12 @@ public class CatalogBrandServiceTest
         // assert
         result.Should().Be(id);
     }
+
     [Fact]
     public async Task AddAsync_Failed()
     {
         // arrange
-        string testType = "newBrand";
+        CatalogBrand testType = null;
         int? id = null;
 
         _catalogRepository.Setup(x => x.AddAsync(It.IsAny<CatalogBrand>()))
@@ -66,11 +69,11 @@ public class CatalogBrandServiceTest
         _testObject.Id = id;
         _testObject.Brand = "updatedBrand";
 
-        _catalogRepository.Setup(x => x.UpdateAsync(It.Is<int>(x => x == id), It.IsAny<CatalogBrand>()))
-                      .ReturnsAsync((int id, CatalogBrand entity) => id);
+        _catalogRepository.Setup(x => x.UpdateAsync(It.IsAny<CatalogBrand>()))
+                      .ReturnsAsync((CatalogBrand entity) => id);
 
         // act
-        var result = await _catalogService.Update(id, _testObject.Brand);
+        var result = await _catalogService.Update(_testObject);
 
         // assert
         result.Should().Be(id);
@@ -80,14 +83,14 @@ public class CatalogBrandServiceTest
     public async Task UpdateAsync_Failed()
     {
         // arrange
-        int id = 1000;
+        int id = 1000000000;
         _testObject.Brand = "Fail";
 
-        _catalogRepository.Setup(x => x.UpdateAsync(It.Is<int>(x => x == id), It.IsAny<CatalogBrand>()))
-                      .ReturnsAsync((int id, CatalogBrand entity) => null);
+        _catalogRepository.Setup(x => x.UpdateAsync(It.IsAny<CatalogBrand>()))
+                      .ReturnsAsync((CatalogBrand entity) => null);
 
         // act
-        var result = await _catalogService.Update(id, _testObject.Brand);
+        var result = await _catalogService.Update(_testObject);
 
         // assert
         result.Should().BeNull();
@@ -126,8 +129,4 @@ public class CatalogBrandServiceTest
         // assert
         result.Should().Be(status);
     }
-
-
-
-
 }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Enums;
+using Catalog.Host.Repositories.Abstractions;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services;
 
@@ -10,7 +11,6 @@ public class CatalogServiceTest
 {
     private readonly ICatalogService _catalogService;
 
-    private readonly Mock<ICatalogItemRepository> _catalogItemRepository;
     private readonly Mock<IMapper> _mapper;
     private readonly Mock<IDbContextWrapper<ApplicationDbContext>> _dbContextWrapper;
     private readonly Mock<ILogger<CatalogService>> _logger;
@@ -18,7 +18,6 @@ public class CatalogServiceTest
 
     public CatalogServiceTest()
     {
-        _catalogItemRepository = new Mock<ICatalogItemRepository>();
         _mapper = new Mock<IMapper>();
         _dbContextWrapper = new Mock<IDbContextWrapper<ApplicationDbContext>>();
         _logger = new Mock<ILogger<CatalogService>>();
@@ -27,7 +26,7 @@ public class CatalogServiceTest
         var dbContextTransaction = new Mock<IDbContextTransaction>();
         _dbContextWrapper.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransaction.Object);
 
-        _catalogService = new CatalogService(_dbContextWrapper.Object, _logger.Object, _catalogBffRepository.Object, _catalogItemRepository.Object, _mapper.Object);
+        _catalogService = new CatalogService(_dbContextWrapper.Object, _logger.Object, _catalogBffRepository.Object, _mapper.Object);
     }
 
     [Fact]
@@ -43,7 +42,7 @@ public class CatalogServiceTest
         var search = "";
         Dictionary<CatalogTypeFilter, int> filters = new Dictionary<CatalogTypeFilter, int>();
 
-        filters.Add(CatalogTypeFilter.Brand, 1); 
+        filters.Add(CatalogTypeFilter.Brand, 1);
         filters.Add(CatalogTypeFilter.Type, 2);
 
         var pagingPaginatedItemsSuccess = new PaginatedItems<CatalogItem>()
@@ -68,7 +67,7 @@ public class CatalogServiceTest
             Name = "TestName"
         };
 
-        _catalogItemRepository.Setup(s =>  s.GetByPageAsync(
+        _catalogBffRepository.Setup(s => s.GetByPageAsync(
             It.Is<int>(i => i == testPageIndex),
             It.Is<int>(i => i == testPageSize),
             It.Is<int?>(i => i == brandFilter),
@@ -102,7 +101,7 @@ public class CatalogServiceTest
         var search = "";
         Dictionary<CatalogTypeFilter, int> filters = new Dictionary<CatalogTypeFilter, int>();
 
-        filters.Add(CatalogTypeFilter.Brand, 1); 
+        filters.Add(CatalogTypeFilter.Brand, 1);
         filters.Add(CatalogTypeFilter.Type, 2);
 
         var pagingPaginatedItemsSuccess = new PaginatedItems<CatalogItem>()
@@ -127,7 +126,7 @@ public class CatalogServiceTest
             Name = "TestName"
         };
 
-        _catalogItemRepository.Setup(s => s.GetByPageAsync(
+        _catalogBffRepository.Setup(s => s.GetByPageAsync(
              It.Is<int>(i => i == testPageIndex),
              It.Is<int>(i => i == testPageSize),
              It.Is<int?>(i => i == brandFilter),
@@ -166,7 +165,6 @@ public class CatalogServiceTest
         result.Should()
             .BeOfType<CatalogItemDto>()
             .And.NotBeNull();
-            
     }
 
     [Fact]
@@ -182,7 +180,6 @@ public class CatalogServiceTest
 
         _mapper.Setup(s => s.Map<CatalogItemDto>(
             It.Is<CatalogItem>(i => i.Equals(item)))).Returns(itemDto);
-
 
         // act
         var result = await _catalogService.GetById(id);
@@ -206,7 +203,6 @@ public class CatalogServiceTest
 
         _mapper.Setup(s => s.Map<CatalogBrandDto>(
             It.Is<CatalogBrand>(i => i.Equals(item)))).Returns(itemDto);
-
 
         // act
         var result = await _catalogService.GetByBrand(brand);
@@ -235,7 +231,7 @@ public class CatalogServiceTest
         var result = await _catalogService.GetByBrand(brand);
 
         // assert
-        result.Should().Match<CatalogBrandDto>(x => x.Brand == null); 
+        result.Should().Match<CatalogBrandDto>(x => x.Brand == null);
     }
 
     [Fact]
@@ -258,7 +254,6 @@ public class CatalogServiceTest
         // assert
         result.Should()
             .NotBeNull();
-
     }
 
     [Fact]
@@ -298,7 +293,6 @@ public class CatalogServiceTest
         // assert
         result.Should()
             .NotBeNull();
-
     }
 
     [Fact]
@@ -336,7 +330,6 @@ public class CatalogServiceTest
         // assert
         result.Should()
             .NotBeNull();
-
     }
 
     [Fact]

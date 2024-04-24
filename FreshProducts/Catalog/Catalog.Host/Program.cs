@@ -8,6 +8,7 @@ using Infrastructure.Extensions;
 using Infrastructure.Filters;
 using Microsoft.OpenApi.Models;
 using Catalog.Host.Repositories.Abstractions;
+using Catalog.Host.Data.Entities;
 
 var configuration = GetConfiguration();
 
@@ -59,11 +60,10 @@ builder.Services.Configure<CatalogConfig>(configuration);
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddTransient<ICatalogItemRepository, CatalogItemRepository>();
 builder.Services.AddTransient<ICatalogService, CatalogService>();
-builder.Services.AddTransient<ICatalogItemService, CatalogItemService>();
-builder.Services.AddTransient<ICatalogTypeService, CatalogTypeService>();
-builder.Services.AddTransient<ICatalogBrandService, CatalogBrandService>();
+builder.Services.AddTransient<IService<CatalogItem>, CatalogItemService>();
+builder.Services.AddTransient<IService<CatalogType>, CatalogTypeService>();
+builder.Services.AddTransient<IService<CatalogBrand>, CatalogBrandService>();
 builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddTransient<ICatalogBffRepository, CatalogBffRepository>();
 

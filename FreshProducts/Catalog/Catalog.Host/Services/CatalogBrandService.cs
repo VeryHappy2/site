@@ -5,7 +5,7 @@ using Catalog.Host.Repositories.Abstractions;
 
 namespace Catalog.Host.Services
 {
-    public class CatalogBrandService : BaseDataService<ApplicationDbContext>, ICatalogBrandService
+    public class CatalogBrandService : BaseDataService<ApplicationDbContext>, IService<CatalogBrand>
     {
         private IRepository<CatalogBrand> _repository { get; set; }
         public CatalogBrandService(
@@ -17,14 +17,14 @@ namespace Catalog.Host.Services
             _repository = repository;
         }
 
-        public async Task<int?> Add(string brand)
+        public async Task<int?> Add(CatalogBrand brand)
         {
             return await ExecuteSafeAsync(async () =>
             {
                 var id = await _repository.AddAsync(
                    new CatalogBrand
                    {
-                       Brand = brand,
+                       Brand = brand.Brand,
                    });
                 return id;
             });
@@ -39,17 +39,11 @@ namespace Catalog.Host.Services
             });
         }
 
-        public async Task<int?> Update(int id, string brand)
+        public async Task<int?> Update(CatalogBrand brand)
         {
             return await ExecuteSafeAsync(async () =>
             {
-                int? result = await _repository.UpdateAsync(
-                    id,
-                    new CatalogBrand
-                    {
-                        Id = id,
-                        Brand = brand
-                    });
+                int? result = await _repository.UpdateAsync(brand);
                 return result;
             });
         }
